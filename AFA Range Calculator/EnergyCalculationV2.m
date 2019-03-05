@@ -1,10 +1,12 @@
 %% Autonomous Flying Ambulance Energy Consumption Calculator and range estimator
 % by Ellande Tang
-% last updated 2019-1-25
+% last updated 2019-1-29
 
-% 2019-1-25 Reorginized for more sensical workflow
+% 2019-1-25 Reorganized for more sensical workflow
 % Changed battery adjustment power calculation
-
+% 2019-1-28 Added Max Speed check for Acceleration
+% added wrapper to calculate optimal acceleration aoa
+% 2019-1-29 Added hover time section
 
 %% Transit Steps
 % Ascent
@@ -23,6 +25,7 @@ rho = 1.225; %kg/m^3
 
 % Vehicle Properties
 mass = 7.67; %kg
+% mass = 8.2;
 W = mass*g; %N
 N_lift = 8;
 N_thrust = 2;
@@ -52,12 +55,14 @@ Drag = @(V,alpha,throttle) 1/2*rho*V.^2*Cd(alpha,throttle)*A_aero;
 
 
 % Energy storage
-batteryVoltage = 18.5; % V
+% 2 5S 6000 mAh Batteries weight 710g each
+% batteryVoltage = 18.5; % V
+batteryVoltage = 3.7*5;
 batteryCapacity = 6; % Ah
 numBatteries = 2;
 UsableEnergyFactor = .8;
-capacity = numBatteries * batteryVoltage*batteryCapacity * UsableEnergyFactor * 3600; %J
-% Power Correction Function based on battery capacity 
+capacity = numBatteries * batteryVoltage * batteryCapacity * UsableEnergyFactor * 3600; %J
+% Power Correction Function based on battery capacity
 powerCorrection = @(P) adjusted_Electric_Energy_Consumption(P, capacity, .8, 1, 1.3);
 % powerCorrection = @(P) P;
 
@@ -84,7 +89,7 @@ rotorThrottle_fun = @(T) T/TMax;
 RPS_h = rotorRPS_fun(W/N_lift);
 % Subtract ideal power from disk actuator theory from measured power to get
 % profile power coefficients
-P0_per = (2*pi*CQ)*(rho*RPS_h^3*D^5) - Ph;%/N_lift;
+P0_per = (2*pi*CQ)*(rho*RPS_h^3*D^5) - Ph;
 Cd0_rotor = 32*P0_per/(sigma_rotor*pi^4*rho*RPS_h^3*D^5);
 % P0 = N_lift * calculate_rotor_profile_power(0,rho, 2*pi*RPS_h ,D/2, sigma_rotor, Cd0_rotor);
 
@@ -102,7 +107,7 @@ lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho
 % Choose target altitude and ascent speed
 altCruise = 100; % m
 
-MaxAcc = (2.2*N_lift*9.81 -W)/mass;
+MaxAcc = (2.2*N_lift*9.81 - W)/mass;
 AscentSpeedList = linspace(2,15,50);
 AscentAccList = linspace(1,13,30);
 
@@ -126,25 +131,28 @@ for ind1 =1:length(AscentSpeedList)
         % Calculate hover energy until desired height achieved
         AscentCruiseEnergy = integral(@(t) ...
             powerCorrection(N_lift*ones(size(t))*lifterPower(AscentCruiseThrust/N_lift,AscentSpeed,pi/2)),0,AscentCruiseTime);
-
+        
         AscentEnergySearch(ind1,ind2) = AscentAccEnergy + AscentCruiseEnergy;
-
+        
     end
 end
 
-% plot(AscentSpeedList,AscentEnergy)
-% legend('Acceleration = $1 \frac{m}{s^2}$','2','interpreter','latex')
+figure(1)
 
 [X,Y] = meshgrid(AscentSpeedList,AscentAccList);
 surf(X,Y,AscentEnergySearch');
-xlabel('Ascent Speed $\frac{m}{s}$','interpreter','Latex')
-ylabel('Acceleration $\frac{m}{s^2}$','interpreter','Latex')
+title('Energy consumption of different acceleration profiles','interpreter','latex')
+xlabel('Ascent Steady Speed $\frac{m}{s}$','interpreter','Latex')
+ylabel('Ascent Acceleration $\frac{m}{s^2}$','interpreter','Latex')
+zlabel('Consumed Energy','interpreter','Latex')
 
 AscentEnergy = min(AscentEnergySearch,[],'all');
 
 [I,J] = ind2sub(size(AscentEnergySearch),find(AscentEnergySearch == AscentEnergy));
 AscentSpeed = AscentSpeedList(I);
 AscentAcc = AscentAccList(J);
+
+AscentTime = AscentSpeed/AscentAcc + (altCruise - 1/2*AscentAcc*(AscentSpeed/AscentAcc)^2)/AscentSpeed;
 
 line(AscentSpeed,AscentAcc,AscentEnergy,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
 
@@ -158,9 +166,9 @@ for ind1 = 1:length(CruiseAoAList)
     
     MaxCruiseSpeed(ind1) = fzero(@(V) Lift(V,CruiseAoA) - W,30);
     
-%     if MaxCruiseSpeed(ind1) > 27
-%        continue 
-%     end
+    %     if MaxCruiseSpeed(ind1) > 27
+    %        continue
+    %     end
     
     % Check Speeds up to cruise speed for a given AoA
     CruiseSpeedList(ind1,:) = linspace(1,MaxCruiseSpeed(ind1),100);
@@ -180,7 +188,7 @@ for ind1 = 1:length(CruiseAoAList)
         
         if ind2 == length(CruiseSpeedList)
             CruisePower(ind1,ind2) = powerCorrection(N_thrust*...
-                thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseThrottle)/N_thrust,CruiseSpeed,CruiseAoA));       
+                thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseThrottle)/N_thrust,CruiseSpeed,CruiseAoA));
         else
             % angle is negative because positive angle brings propeller
             % more aligned with freestream
@@ -193,9 +201,12 @@ for ind1 = 1:length(CruiseAoAList)
     
 end
 
+figure(2)
+
 % Plot results
-surf(repmat(CruiseAoAList',[1,length(CruiseSpeedList)]),CruiseSpeedList,CruiseEffectiveDrag)
-xlabel('Angle of Attack','interpreter','Latex')
+surf(rad2deg(repmat(CruiseAoAList',[1,length(CruiseSpeedList)])),CruiseSpeedList,CruiseEffectiveDrag)
+title('Power consumption of different cruise configurations','interpreter','Latex')
+xlabel('Angle of Attack (deg)','interpreter','Latex')
 ylabel('Cruise Speed $\frac{m}{s}$','interpreter','Latex')
 zlabel('Power/Speed','interpreter','Latex')
 
@@ -204,33 +215,64 @@ CruiseEffectiveDragMin = min(CruiseEffectiveDrag,[],'all');
 CruiseAoA = CruiseAoAList(I);
 CruiseSpeed = CruiseSpeedList(I,J);
 
-line(CruiseAoA,CruiseSpeed,CruiseEffectiveDragMin,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
+line(rad2deg(CruiseAoA),CruiseSpeed,CruiseEffectiveDragMin,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
 
 %% Acceleration
 
-% Aim for level flight
-% Accelerate to desired cruise speed
+AccAoAList = CruiseAoAList;
+
+% Calculate Max Speeds at each angle of attack to check if acceleration is
+% possible
 
 options = optimoptions('fsolve','Display','none');
 T = @(V) fsolve(@(T) T/2*(V + sqrt(V.^2 + 2*T/(rho*A_prop))) - TMax^(3/2)/sqrt(2*rho*A_prop),TMax,options);
+for ind1 = 1:length(AccAoAList)
+    Vmax(ind1) = fsolve(@(V) 2*T(V)*cos(AccAoAList(ind1)) - Drag(V,AccAoAList(ind1),0),30,options);
+end
 
-f = @(t,x) [x(2),(N_thrust*T(x(2)) - Drag(x(2),CruiseAoA,sqrt(max([0,(W - Lift(x(2),CruiseAoA))])/(N_lift*TMax))))/mass]';
+figure(3)
+plot(rad2deg(CruiseAoAList),Vmax,'k')
+xlabel('Angle of Attack (deg)','interpreter','latex')
+ylabel('Max Speed $\frac{m}{s}$','interpreter','latex')
 
-[t,x]  = ode45(f,[0,20],[0,0]');
-AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+% Aim for level flight
+% Accelerate to desired cruise speed
+for ind1 = 1:length(AccAoAList)
+    
+    if Vmax(ind1) > CruiseSpeed
+              
+        f = @(t,x) [x(2),(N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),sqrt(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/(N_lift*TMax))))/mass]';
+        
+        [t,x]  = ode45(f,[0,100],[0,0]');
+        AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+        [t,x]  = ode45(f,[0,t(AccCruiseSpeedIndex)+1],[0,0]');
+        AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+           
+        AccSpeedProfile = @(tSample) interp1(t,x(:,2),tSample);
+        
+        AccLifterThrust = @(tSample) interp1(t(1:AccCruiseSpeedIndex),(W - Lift(x(1:AccCruiseSpeedIndex,2),AccAoAList(ind1)))/N_lift,tSample);
+        
+        AccFinishTime = fzero(@(t) AccSpeedProfile(t) - CruiseSpeed,t(AccCruiseSpeedIndex-1));
+        
+        AccLifterTotalPower = @(tSample) N_lift*lifterPower(...
+            max([zeros(size(AccLifterThrust(tSample))),AccLifterThrust(tSample)]),...
+            interp1(t(1:AccCruiseSpeedIndex),x(1:AccCruiseSpeedIndex,2),tSample),-AccAoAList(ind1));
+        
+        AccEnergy(ind1) = integral(@(tSample)...
+            powerCorrection(N_thrust*thrusterPower(TMax,AccSpeedProfile(tSample),AccAoAList(ind1)) + AccLifterTotalPower(tSample)),0,AccFinishTime);
+        
+    else
+        AccEnergy(ind1) = 1e10;
+    end
+end
 
-AccSpeedProfile = @(tSample) interp1(t(1:AccCruiseSpeedIndex),x(1:AccCruiseSpeedIndex,2),tSample);
+[AccEnergyMin,I] = min(AccEnergy);
 
-AccLifterThrust = @(tSample) interp1(t(1:AccCruiseSpeedIndex),(W - Lift(x(1:AccCruiseSpeedIndex,2),CruiseAoA))/N_lift,tSample);
+figure(4)
 
-AccFinishTime = fzero(@(t) AccLifterThrust(t),t(AccCruiseSpeedIndex-1));
-
-AccLifterTotalPower = @(tSample) N_lift*lifterPower(...
-    AccLifterThrust(tSample),interp1(t(1:AccCruiseSpeedIndex),x(1:AccCruiseSpeedIndex,2),tSample),-CruiseAoA);
-
-AccEnergy = integral(@(tSample)...
-    powerCorrection(N_thrust*thrusterPower(TMax,AccSpeedProfile(tSample),CruiseAoA) + AccLifterTotalPower(tSample)),0,AccFinishTime);
-
+plot(rad2deg(AccAoAList),AccEnergy(AccEnergy<1e7),'k')
+xlabel('Angle of Attack (deg)')
+ylabel('Energy Required for Acceleration (J)')
 
 %% Decceleration
 % potentially small, may ignore for now
@@ -249,17 +291,25 @@ DescentPower = N_lift*lifterPower(W/N_lift,0,pi/2);
 
 DescentEnergy = powerCorrection(DescentPower)*DescentDistance/DescentSpeed;
 
-%% Caluclate cruise range from remaining capacity
+%% Hover
 
-CalculatedRange = (capacity - (AscentEnergy+AccEnergy+DeccEnergy+DescentEnergy))/CruiseEffectiveDragMin; %m
+HoverTime = 0; %s
+
+HoverPower = N_lift*lifterPower(W/N_lift,0,pi/2);
+
+HoverEnergy = powerCorrection(HoverPower)*HoverTime;
+
+%% Calculate cruise range from remaining capacity
+
+CalculatedRange = (capacity - (AscentEnergy+AccEnergyMin+DeccEnergy+DescentEnergy+HoverEnergy))/CruiseEffectiveDragMin; %m
 
 CruiseEnergy = CruiseEffectiveDragMin*CalculatedRange;
 
-%% Energy Fractions
+%% Display Results
 
 disp(['Ascent:' num2str(AscentEnergy/capacity*100) '%'])
 
-disp(['Acceleration:' num2str(AccEnergy/capacity*100) '%'])
+disp(['Acceleration:' num2str(AccEnergyMin/capacity*100) '%'])
 
 disp(['Cruise:' num2str(CruiseEnergy/capacity*100) '%'])
 
@@ -267,5 +317,8 @@ disp(['Deceleration:' num2str(DeccEnergy/capacity*100) '%'])
 
 disp(['Descent:' num2str(DescentEnergy/capacity*100) '%'])
 
+disp(['Hover:' num2str(HoverEnergy/capacity*100) '%'])
+
+disp(['Range:', num2str(CalculatedRange/1000), 'km'])
 
 
