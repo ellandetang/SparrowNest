@@ -1,12 +1,14 @@
 %% Autonomous Flying Ambulance Energy Consumption Calculator and range estimator
 % by Ellande Tang
-% last updated 2019-1-29
+% last updated 2019-6-1
 
 % 2019-1-25 Reorganized for more sensical workflow
 % Changed battery adjustment power calculation
 % 2019-1-28 Added Max Speed check for Acceleration
 % added wrapper to calculate optimal acceleration aoa
 % 2019-1-29 Added hover time section
+% 2019-6-11 Incorporating more appropriate drag function for lifting rotor
+% drag
 
 %% Transit Steps
 % Ascent
@@ -24,8 +26,8 @@ g = 9.81; % m/s^2
 rho = 1.225; %kg/m^3
 
 % Vehicle Properties
-mass = 7.67; %kg
-% mass = 8.2;
+% mass = 7.67; %kg
+mass = 8.5;
 W = mass*g; %N
 N_lift = 8;
 N_thrust = 2;
@@ -38,17 +40,15 @@ CLa_total   = 2.034367504585228; %[/rad]
 CL0_total   = 0.360538456241375;
 CLmax_total = 0.8500; % more than 9 deg
 
-k_throttle = 1.509899842598176;
-CD0_lifters = 0.147108904757889;
-CDa_lifters = 1.697996549221528;
-
 A_aero = .566;
+
 Cl = @(alpha) CL0_total + CLa_total*alpha;
-Cd = @(alpha,throttle) CD0_total + k_total*Cl(alpha)^2 ...
-    +(k_throttle*throttle.^2).*...
-    (CD0_lifters + CDa_lifters*alpha);
-% Cd = @(alpha,throttle) CD0_total + k_total*Cl(alpha)^2;
+
+Cd = @(alpha) CD0_total + k_total*Cl(alpha)^2;
+
 % Thruster drag increase model
+
+LifterDrag = @(rpm,V,aoa)  (-4.378771958060490e-12*(aoa - 90)).*V.*rpm.^2;
 
 Lift = @(V,alpha) 1/2*rho*V.^2*Cl(alpha)*A_aero;
 Drag = @(V,alpha,throttle) 1/2*rho*V.^2*Cd(alpha,throttle)*A_aero;
@@ -57,7 +57,8 @@ Drag = @(V,alpha,throttle) 1/2*rho*V.^2*Cd(alpha,throttle)*A_aero;
 % Energy storage
 % 2 5S 6000 mAh Batteries weight 710g each
 % batteryVoltage = 18.5; % V
-batteryVoltage = 3.7*5;
+batteryCells = 6;
+batteryVoltage = 3.7*batteryCells;
 batteryCapacity = 6; % Ah
 numBatteries = 2;
 UsableEnergyFactor = .8;
@@ -81,6 +82,7 @@ sigma_rotor  = 0.15;
 
 %% Propeller Properties calculation
 
+% Calculates required RPS from thrust in static conditions
 rotorRPS_fun = @(T) sqrt(T./(CT*rho*D^4));
 rotorThrottle_fun = @(T) T/TMax;
 
@@ -270,7 +272,7 @@ end
 
 figure(4)
 
-plot(rad2deg(AccAoAList),AccEnergy(AccEnergy<1e7),'k')
+plot(rad2deg(AccAoAList(AccEnergy<1e7)),AccEnergy(AccEnergy<1e7),'k')
 xlabel('Angle of Attack (deg)')
 ylabel('Energy Required for Acceleration (J)')
 
