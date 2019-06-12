@@ -23,7 +23,10 @@ close all
 
 % Environmental Parameters
 g = 9.81; % m/s^2
+
 rho = 1.225; %kg/m^3
+% rho = 1.1827; % Measured using CAST temperature and humidity
+
 
 % Vehicle Properties
 % mass = 7.67; %kg
@@ -48,10 +51,11 @@ Cd = @(alpha) CD0_total + k_total*Cl(alpha)^2;
 
 % Thruster drag increase model
 
-LifterDrag = @(rpm,V,aoa)  (-4.378771958060490e-12*(aoa - 90)).*V.*rpm.^2;
+LifterDrag = @(rpm,V,aoa)  (-4.378771958060490e-12/1.182*rho*(rad2deg(aoa) - 90)).*V.*rpm.^2;
 
 Lift = @(V,alpha) 1/2*rho*V.^2*Cl(alpha)*A_aero;
-Drag = @(V,alpha,throttle) 1/2*rho*V.^2*Cd(alpha,throttle)*A_aero;
+Drag = @(V,alpha,rpm) 1/2*rho*V.^2*Cd(alpha)*A_aero +...
+    LifterDrag(rpm,V,alpha)*N_lift;
 
 
 % Energy storage
@@ -84,7 +88,6 @@ sigma_rotor  = 0.15;
 
 % Calculates required RPS from thrust in static conditions
 rotorRPS_fun = @(T) sqrt(T./(CT*rho*D^4));
-rotorThrottle_fun = @(T) T/TMax;
 
 % Use hover properties to derive profile coefficients
 [Ph, ~] = calculate_rotor_vertical_flight_power(W/N_lift,0,rho,A_prop);
@@ -109,11 +112,11 @@ lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho
 % Choose target altitude and ascent speed
 altCruise = 100; % m
 
-MaxAcc = (2.2*N_lift*9.81 - W)/mass;
+MaxAcc = (TMax*N_lift - W)/mass;
 AscentSpeedList = linspace(2,15,50);
 AscentAccList = linspace(1,13,30);
 
-for ind1 =1:length(AscentSpeedList)
+for ind1 = 1:length(AscentSpeedList)
     for ind2 = 1:length(AscentAccList)
         AscentSpeed = AscentSpeedList(ind1);
         AscentAcc = AscentAccList(ind2);
@@ -159,7 +162,7 @@ AscentTime = AscentSpeed/AscentAcc + (altCruise - 1/2*AscentAcc*(AscentSpeed/Asc
 line(AscentSpeed,AscentAcc,AscentEnergy,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
 
 %% Steady State Cruise Speed
-% Pre calculate optimum cruise speed
+% Calculate optimum cruise speed based on vehicle's power consumption
 
 CruiseAoAList = deg2rad(linspace(-4,10,30));
 
@@ -186,16 +189,16 @@ for ind1 = 1:length(CruiseAoAList)
             CruiseLiftDeficit = 0;
         end
         
-        CruiseThrottle = sqrt(CruiseLiftDeficit/(N_lift*TMax));
+        CruiseRPM = rotorRPS_fun(CruiseLiftDeficit/N_lift)*60;
         
         if ind2 == length(CruiseSpeedList)
             CruisePower(ind1,ind2) = powerCorrection(N_thrust*...
-                thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseThrottle)/N_thrust,CruiseSpeed,CruiseAoA));
+                thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseRPM)/N_thrust,CruiseSpeed,CruiseAoA));
         else
             % angle is negative because positive angle brings propeller
             % more aligned with freestream
             CruisePower(ind1,ind2) = powerCorrection(N_lift*lifterPower(CruiseLiftDeficit/N_lift,CruiseSpeed,-CruiseAoA)...
-                + N_thrust*thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseThrottle)/N_thrust,CruiseSpeed,CruiseAoA));
+                + N_thrust*thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseRPM)/N_thrust,CruiseSpeed,CruiseAoA));
         end
         
         CruiseEffectiveDrag(ind1,ind2) = CruisePower(ind1,ind2)/CruiseSpeed;
@@ -221,6 +224,10 @@ line(rad2deg(CruiseAoA),CruiseSpeed,CruiseEffectiveDragMin,'marker','o','color',
 
 %% Acceleration
 
+% For ech cruise speed, choos an angle of attack to accelerate at. Simulate
+% this acceleration and calculate the total energy consumption of this
+% process
+
 AccAoAList = CruiseAoAList;
 
 % Calculate Max Speeds at each angle of attack to check if acceleration is
@@ -242,28 +249,38 @@ ylabel('Max Speed $\frac{m}{s}$','interpreter','latex')
 for ind1 = 1:length(AccAoAList)
     
     if Vmax(ind1) > CruiseSpeed
-              
+        % Simulate acceleration using an ode solver
+        
+        % System Dynamics
         f = @(t,x) [x(2),(N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),sqrt(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/(N_lift*TMax))))/mass]';
         
+        % Simulate over long timespan
         [t,x]  = ode45(f,[0,100],[0,0]');
         AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+        % Simulate over refined timespan
         [t,x]  = ode45(f,[0,t(AccCruiseSpeedIndex)+1],[0,0]');
         AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
            
+        % Create continuous function for integration for speed and thrust
         AccSpeedProfile = @(tSample) interp1(t,x(:,2),tSample);
         
         AccLifterThrust = @(tSample) interp1(t(1:AccCruiseSpeedIndex),(W - Lift(x(1:AccCruiseSpeedIndex,2),AccAoAList(ind1)))/N_lift,tSample);
         
+        % Find integration time
         AccFinishTime = fzero(@(t) AccSpeedProfile(t) - CruiseSpeed,t(AccCruiseSpeedIndex-1));
         
+        % Craft Power function for a trajectory
         AccLifterTotalPower = @(tSample) N_lift*lifterPower(...
             max([zeros(size(AccLifterThrust(tSample))),AccLifterThrust(tSample)]),...
             interp1(t(1:AccCruiseSpeedIndex),x(1:AccCruiseSpeedIndex,2),tSample),-AccAoAList(ind1));
         
+        % Integrate to find total energy consumption
         AccEnergy(ind1) = integral(@(tSample)...
             powerCorrection(N_thrust*thrusterPower(TMax,AccSpeedProfile(tSample),AccAoAList(ind1)) + AccLifterTotalPower(tSample)),0,AccFinishTime);
         
     else
+        % If desired cruise speed is not reachable, make energy
+        % requirement excessively large
         AccEnergy(ind1) = 1e10;
     end
 end
@@ -294,6 +311,8 @@ DescentPower = N_lift*lifterPower(W/N_lift,0,pi/2);
 DescentEnergy = powerCorrection(DescentPower)*DescentDistance/DescentSpeed;
 
 %% Hover
+
+% Calculate energy required to hover for a certain amount of time
 
 HoverTime = 0; %s
 
