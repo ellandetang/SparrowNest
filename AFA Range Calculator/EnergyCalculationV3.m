@@ -1,6 +1,6 @@
 %% Autonomous Flying Ambulance Energy Consumption Calculator and range estimator
 % by Ellande Tang
-% last updated 2019-6-11
+% last updated 2019-6-12
 
 % 2019-1-25 Reorganized for more sensical workflow
 % Changed battery adjustment power calculation
@@ -9,6 +9,7 @@
 % 2019-1-29 Added hover time section
 % 2019-6-11 Incorporating more appropriate drag function for lifting rotor
 % drag
+% 2019-6-12 Include optimization in analysis
 
 %% Transit Steps
 % Ascent
@@ -19,6 +20,12 @@
 
 clear
 close all
+
+%% Make Parameters Global
+
+% Verify all of these values are defined before moving to script
+globalVariableDefinition
+
 %% Define Critical variables
 
 % Environmental Parameters
@@ -113,8 +120,8 @@ lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho
 altCruise = 100; % m
 
 MaxAcc = (TMax*N_lift - W)/mass;
-AscentSpeedList = linspace(2,15,50);
-AscentAccList = linspace(1,13,30);
+AscentSpeedList = linspace(2,15,5);
+AscentAccList = linspace(1,MaxAcc,5);
 
 for ind1 = 1:length(AscentSpeedList)
     for ind2 = 1:length(AscentAccList)
@@ -124,8 +131,8 @@ for ind1 = 1:length(AscentSpeedList)
         % Calculates operation times
         AscentAccTime = min([sqrt(2*altCruise/AscentAcc) AscentSpeed/AscentAcc]);
         AscentCruiseTime = max([(altCruise - 1/2*AscentAcc*AscentAccTime^2)/AscentSpeed,0]);
-        AscentAccThrust = 1/2*rho*AscentSpeed^2*.566 + mass*AscentAcc + W;
-        AscentCruiseThrust = 1/2*rho*AscentSpeed^2*.566 + W;
+        AscentAccThrust = 1/2*rho*AscentSpeed^2*A_aero + mass*AscentAcc + W;
+        AscentCruiseThrust = 1/2*rho*AscentSpeed^2*A_aero + W;
         
         % Calculate acceleration energy
         
@@ -145,26 +152,45 @@ end
 figure(1)
 
 [X,Y] = meshgrid(AscentSpeedList,AscentAccList);
-surf(X,Y,AscentEnergySearch');
+surf(X,Y,AscentEnergySearch','FaceAlpha',0.5);
 title('Energy consumption of different acceleration profiles','interpreter','latex')
 xlabel('Ascent Steady Speed $\frac{m}{s}$','interpreter','Latex')
 ylabel('Ascent Acceleration $\frac{m}{s^2}$','interpreter','Latex')
 zlabel('Consumed Energy','interpreter','Latex')
 
-AscentEnergy = min(AscentEnergySearch,[],'all');
-
-[I,J] = ind2sub(size(AscentEnergySearch),find(AscentEnergySearch == AscentEnergy));
-AscentSpeed = AscentSpeedList(I);
-AscentAcc = AscentAccList(J);
+% Finds grid search minimum
+[AscentEnergyTemp,AscentEnergyIndexTemp] = min(AscentEnergySearch);
+[AscentEnergy,AscentEnergyInd2] = min(AscentEnergyTemp);
+AscentEnergyInd1 = AscentEnergyIndexTemp(AscentEnergyInd2);
+AscentSpeed = AscentSpeedList(AscentEnergyInd1);
+AscentAcc = AscentAccList(AscentEnergyInd2);
 
 AscentTime = AscentSpeed/AscentAcc + (altCruise - 1/2*AscentAcc*(AscentSpeed/AscentAcc)^2)/AscentSpeed;
 
-line(AscentSpeed,AscentAcc,AscentEnergy,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
+in0 = [AscentSpeed,AscentAcc]';
+
+costF = @(in) ascentCostFunction(in(1),in(2));
+
+options = optimoptions('fmincon','Display','none');
+[AscentOpt,AscentEnergyOpt] = ...
+    fmincon(costF,...
+    in0,...
+    [],[],...
+    [],[],...
+    [2 1]',[15,MaxAcc]',...
+    [],options);
+
+AscentSpeedOpt = AscentOpt(1);
+AscentAccOpt = AscentOpt(2);
+
+line(AscentSpeedOpt,AscentAccOpt,AscentEnergyOpt,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
 
 %% Steady State Cruise Speed
 % Calculate optimum cruise speed based on vehicle's power consumption
 
-CruiseAoAList = deg2rad(linspace(-4,10,30));
+clear('CruiseAoAList','CruiseSpeedList','CruiseEffectiveDragSearch','MaxCruiseSpeed')
+
+CruiseAoAList = deg2rad(linspace(-4,10,5));
 
 for ind1 = 1:length(CruiseAoAList)
     CruiseAoA = CruiseAoAList(ind1);
@@ -176,9 +202,9 @@ for ind1 = 1:length(CruiseAoAList)
     %     end
     
     % Check Speeds up to cruise speed for a given AoA
-    CruiseSpeedList(ind1,:) = linspace(1,MaxCruiseSpeed(ind1),100);
+    CruiseSpeedList(ind1,:) = linspace(1,MaxCruiseSpeed(ind1),5);
     
-    for ind2 = 1:length(CruiseSpeedList)
+    for ind2 = 1:size(CruiseSpeedList,2)
         
         CruiseSpeed = CruiseSpeedList(ind1,ind2);
         
@@ -201,7 +227,7 @@ for ind1 = 1:length(CruiseAoAList)
                 + N_thrust*thrusterPower(Drag(CruiseSpeed,CruiseAoA,CruiseRPM)/N_thrust,CruiseSpeed,CruiseAoA));
         end
         
-        CruiseEffectiveDrag(ind1,ind2) = CruisePower(ind1,ind2)/CruiseSpeed;
+        CruiseEffectiveDragSearch(ind1,ind2) = CruisePower(ind1,ind2)/CruiseSpeed;
     end
     
 end
@@ -209,18 +235,75 @@ end
 figure(2)
 
 % Plot results
-surf(rad2deg(repmat(CruiseAoAList',[1,length(CruiseSpeedList)])),CruiseSpeedList,CruiseEffectiveDrag)
+surf(rad2deg(repmat(CruiseAoAList',[1,size(CruiseSpeedList,2)])),CruiseSpeedList,CruiseEffectiveDragSearch)
 title('Power consumption of different cruise configurations','interpreter','Latex')
 xlabel('Angle of Attack (deg)','interpreter','Latex')
 ylabel('Cruise Speed $\frac{m}{s}$','interpreter','Latex')
 zlabel('Power/Speed','interpreter','Latex')
 
-CruiseEffectiveDragMin = min(CruiseEffectiveDrag,[],'all');
-[I,J] = ind2sub(size(CruiseEffectiveDrag),find(CruiseEffectiveDrag == CruiseEffectiveDragMin));
-CruiseAoA = CruiseAoAList(I);
-CruiseSpeed = CruiseSpeedList(I,J);
+%%
+% Finds grid search minimum
+[CruiseEffectiveDragTemp,CruiseEffectiveDragIndexTemp] = min(CruiseEffectiveDragSearch);
+[CruiseEffectiveDrag,CruiseEffectiveDragInd2] = min(CruiseEffectiveDragTemp);
+CruiseEffectiveDragInd1 = CruiseEffectiveDragIndexTemp(CruiseEffectiveDragInd2);
+CruiseAoA = CruiseAoAList(CruiseEffectiveDragInd1);
+CruiseSpeed = CruiseSpeedList(CruiseEffectiveDragInd1,CruiseEffectiveDragInd2);
 
-line(rad2deg(CruiseAoA),CruiseSpeed,CruiseEffectiveDragMin,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
+line(rad2deg(CruiseAoA),CruiseSpeed,CruiseEffectiveDrag,'marker','o','color',[1,0,0],'MarkerFaceColor',[1 0 0]);
+%%
+
+scalingFactor1 = 1;
+scalingFactor2 = 1;
+
+in0 = [CruiseAoA/scalingFactor1,CruiseSpeed/scalingFactor2]';
+
+costF = @(in) cruiseCostFunction(in(1)*scalingFactor1,in(2)*scalingFactor2);
+conF = @(in) cruiseNonLCon(in(1)*scalingFactor1,in(2)*scalingFactor2);
+
+options = optimoptions('fmincon','Display','none','StepTolerance',1e-10);
+[CruiseOpt,CruiseEffectiveDragOpt1] = ...
+    fmincon(costF,...
+    in0,...
+    [],[],...
+    [],[],...
+    [deg2rad(-4)/scalingFactor1 10/scalingFactor2]',[deg2rad(10)/scalingFactor1 35/scalingFactor2]',...
+    conF,options);
+
+CruiseAoAOpt1 = CruiseOpt(1)*scalingFactor1;
+CruiseSpeedOpt1 = CruiseOpt(2)*scalingFactor2;
+
+% CruiseSpeedOpt = fzero(@(V) Lift(V,CruiseAoAOpt) - W,30);
+
+line(rad2deg(CruiseAoAOpt1),CruiseSpeedOpt1,CruiseEffectiveDragOpt1,'marker','o','color',[1,0,0],'MarkerFaceColor',[rand rand rand]);
+
+
+scalingFactor1 = 1;
+
+in0 = CruiseAoA/scalingFactor1;
+
+costF = @(in) cruiseCostFunctionAoa(in*scalingFactor1);
+
+options = optimoptions('fmincon','Display','none','StepTolerance',1e-10);
+[CruiseAoAOpt2,CruiseEffectiveDragOpt2] = ...
+    fmincon(costF,...
+    in0,...
+    [],[],...
+    [],[],...
+    [deg2rad(-4)/scalingFactor1]',[deg2rad(10)/scalingFactor1]',...
+    [],options);
+
+CruiseSpeedOpt2 = fzero(@(V) Lift(V,CruiseAoAOpt) - W,30);
+
+line(rad2deg(CruiseAoAOpt2),CruiseSpeedOpt2,CruiseEffectiveDragOpt2,'marker','o','color',[1,0,0],'MarkerFaceColor',[rand rand rand]);
+
+[CruiseEffectiveDragOpt,selInd] = min([CruiseEffectiveDragOpt1,CruiseEffectiveDragOpt2]);
+if selInd == 1
+    CruiseAoAOpt = CruiseAoAOpt1;
+    CruiseSpeedOpt = CruiseSpeedOpt1;
+else
+    CruiseAoAOpt = CruiseAoAOpt2;
+    CruiseSpeedOpt = CruiseSpeedOpt2;
+end
 
 %% Acceleration
 
@@ -260,7 +343,7 @@ for ind1 = 1:length(AccAoAList)
         % Simulate over refined timespan
         [t,x]  = ode45(f,[0,t(AccCruiseSpeedIndex)+1],[0,0]');
         AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
-           
+        
         % Create continuous function for integration for speed and thrust
         AccSpeedProfile = @(tSample) interp1(t,x(:,2),tSample);
         
