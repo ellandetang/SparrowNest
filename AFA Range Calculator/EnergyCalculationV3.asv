@@ -31,7 +31,7 @@ globalVariableDefinition
 % Environmental Parameters
 g = 9.81; % m/s^2
 
-rho = 1.0788; %kg/m^3
+rho = 1.225; %kg/m^3
 % rho = 1.1827; % Measured using CAST temperature and humidity
 
 
@@ -58,7 +58,7 @@ Cd = @(alpha) CD0_total + k_total*Cl(alpha)^2;
 
 % Thruster drag increase model
 
-LifterDrag = @(rpm,V,aoa)  (-4.378771958060490e-12/1.182*rho*(rad2deg(max(aoa,0)) - 90)).*V.*rpm.^2;
+LifterDrag = @(rpm,V,aoa)  (-4.378771958060490e-12/1.182*rho*(rad2deg(aoa) - 90)).*V.*rpm.^2;
 
 Lift = @(V,alpha) 1/2*rho*V.^2*Cl(alpha)*A_aero;
 Drag = @(V,alpha,rpm) 1/2*rho*V.^2*Cd(alpha)*A_aero +...
@@ -311,19 +311,13 @@ end
 % this acceleration and calculate the total energy consumption of this
 % process
 
-TargetCruiseSpeed = CruiseSpeedOpt;
-
-AccAoAList = deg2rad(linspace(-4,10,29));
+AccAoAList = deg2rad(linspace(-4,10,100));
 
 % Calculate Max Speeds at each angle of attack to check if acceleration is
 % possible
 
 options = optimoptions('fsolve','Display','none');
 T = @(V) fsolve(@(T) T/2*(V + sqrt(V.^2 + 2*T/(rho*A_prop))) - TMax^(3/2)/sqrt(2*rho*A_prop),TMax,options);
-
-Vmax = zeros(size(AccAoAList));
-AccEnergy = zeros(size(AccAoAList));
-
 for ind1 = 1:length(AccAoAList)
     Vmax(ind1) = fsolve(@(V) 2*T(V)*cos(AccAoAList(ind1)) - Drag(V,AccAoAList(ind1),0),30,options);
 end
@@ -337,36 +331,29 @@ ylabel('Max Speed $\frac{m}{s}$','interpreter','latex')
 % Accelerate to desired cruise speed
 for ind1 = 1:length(AccAoAList)
     
-    if Vmax(ind1) > TargetCruiseSpeed
+    if Vmax(ind1) > CruiseSpeed
         % Simulate acceleration using an ode solver
         
         % System Dynamics
         f = @(t,x) [x(2);
-            (N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),rotorRPS_fun(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/N_lift)*60))/mass];
-         
-        optionsLow = odeset('RelTol',1e-4);
-        optionsHigh = odeset('RelTol',1e-10);
-        % Simulate over long timespan
-        [t,x]  = ode45(f,[0,100],[0,0]',optionsLow);
-        AccCruiseSpeedIndex = find(x(:,2) > TargetCruiseSpeed,1);
-        % Simulate over refined timespan
-        [t,x]  = ode45(f,[0,t(AccCruiseSpeedIndex)+1],[0,0]',optionsHigh);
-        AccCruiseSpeedIndex = find(x(:,2) > TargetCruiseSpeed,1);
+            (N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),rotorRPS_fun(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/N_lift)*60))/mass]';
         
         
-%         figure(4)
-%         plot(t,x(:,2),'marker','.')
-%         line(t,CruiseSpeed*ones(size(t)))
-%         xlim([0,12])
-%         keyboard
 
+        % Simulate over long timespan
+        [t,x]  = ode45(f,[0,100],[0,0]');
+        AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+        % Simulate over refined timespan
+        [t,x]  = ode45(f,[0,t(AccCruiseSpeedIndex)+1],[0,0]');
+        AccCruiseSpeedIndex = find(x(:,2)>CruiseSpeed,1);
+        
         % Create continuous function for integration for speed and thrust
         AccSpeedProfile = @(tSample) interp1(t,x(:,2),tSample);
         
         AccLifterThrust = @(tSample) interp1(t(1:AccCruiseSpeedIndex),(W - Lift(x(1:AccCruiseSpeedIndex,2),AccAoAList(ind1)))/N_lift,tSample);
         
         % Find integration time
-        AccFinishTime = fzero(@(t) AccSpeedProfile(t) - TargetCruiseSpeed,t(AccCruiseSpeedIndex-1));
+        AccFinishTime = fzero(@(t) AccSpeedProfile(t) - CruiseSpeed,t(AccCruiseSpeedIndex-1));
         
         % Craft Power function for a trajectory
         AccLifterTotalPower = @(tSample) N_lift*lifterPower(...
@@ -388,7 +375,7 @@ end
 
 figure(4)
 
-plot(rad2deg(AccAoAList(AccEnergy<1e7)),AccEnergy(AccEnergy<1e7),'k','marker','.')
+plot(rad2deg(AccAoAList(AccEnergy<1e7)),AccEnergy(AccEnergy<1e7),'k')
 xlabel('Angle of Attack (deg)')
 ylabel('Energy Required for Acceleration (J)')
 
@@ -421,13 +408,13 @@ HoverEnergy = powerCorrection(HoverPower)*HoverTime;
 
 %% Calculate cruise range from remaining capacity
 
-CalculatedRange = (capacity - (AscentEnergyOpt+AccEnergyMin+DeccEnergy+DescentEnergy+HoverEnergy))/CruiseEffectiveDragOpt; %m
+CalculatedRange = (capacity - (AscentEnergy+AccEnergyMin+DeccEnergy+DescentEnergy+HoverEnergy))/CruiseEffectiveDragMin; %m
 
-CruiseEnergy = CruiseEffectiveDragOpt*CalculatedRange;
+CruiseEnergy = CruiseEffectiveDragMin*CalculatedRange;
 
 %% Display Results
 
-disp(['Ascent:' num2str(AscentEnergyOpt/capacity*100) '%'])
+disp(['Ascent:' num2str(AscentEnergy/capacity*100) '%'])
 
 disp(['Acceleration:' num2str(AccEnergyMin/capacity*100) '%'])
 
