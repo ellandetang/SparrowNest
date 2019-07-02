@@ -1,6 +1,6 @@
 %% Autonomous Flying Ambulance Energy Consumption Calculator and range estimator
 % by Ellande Tang
-% last updated 2019-6-12
+% last updated 2019-6-28
 
 % 2019-1-25 Reorganized for more sensical workflow
 % Changed battery adjustment power calculation
@@ -10,6 +10,8 @@
 % 2019-6-11 Incorporating more appropriate drag function for lifting rotor
 % drag
 % 2019-6-12 Include optimization in analysis
+% 2019-6-28 Updated for different lifter and thruster props, 8 inch lifter
+% props now
 
 %% Transit Steps
 % Ascent
@@ -24,7 +26,36 @@ close all
 %% Make Parameters Global
 
 % Verify all of these values are defined before moving to script
-globalVariableDefinition
+globalVariableDefinition_forV4
+
+% % Environmental Parameters
+% global g rho mass...
+%     W N_lift N_thrust
+% 
+% % Vehicle aerodynamic characteristics
+% global k_total CD0_total CLa_total...
+%     CL0_total CLmax_total A_aero...
+%     Cl Cd 
+% 
+% % Thruster drag increase model
+% global LifterDrag Lift Drag
+% 
+% % Energy storage
+% global batteryCells batteryVoltage batteryCapacity...
+%     numBatteries UsableEnergyFactor capacity...
+%     powerCorrection
+% 
+% % Propeller Parameters
+% global D_lifter A_prop_lifter CT_lifter...
+%     CQ_lifter RPSMax_lifter TMax_lifter...
+%     rotorRPS_fun_lifter Ph_lifter RPS_h_lifter...
+%     P0_per_lifter Cd0_rotor_lifter...
+%     D_thruster A_prop_thruster CT_thruster...
+%     CQ_thruster RPSMax_thruster TMax_thruster...
+%     rotorRPS_fun_thruster Ph_thruster RPS_h_thruster...
+%     P0_per_thruster Cd0_rotor_thruster...
+%     kappa sigma_rotor...
+%     thrusterPower lifterPower
 
 %% Define Critical variables
 
@@ -37,7 +68,7 @@ rho = 1.1827; % Measured using CAST temperature and humidity
 
 % Vehicle Properties
 % mass = 7.67; %kg
-mass = 8.5;
+mass = 8;
 W = mass*g; %N
 N_lift = 8;
 N_thrust = 2;
@@ -66,7 +97,8 @@ Drag = @(V,alpha,rpm) 1/2*rho*V.^2*Cd(alpha)*A_aero +...
 
 
 % Energy storage
-% 2 5S 6000 mAh Batteries weight 710g each
+% 2 5S 6000 mAh Batteries weight 710g each or
+% 2 6S 6000 mAh Batteries weight 
 % batteryVoltage = 18.5; % V
 batteryCells = 6;
 batteryVoltage = 3.7*batteryCells;
@@ -78,13 +110,22 @@ capacity = numBatteries * batteryVoltage * batteryCapacity * UsableEnergyFactor 
 powerCorrection = @(P) adjusted_Electric_Energy_Consumption(P, capacity, .8, 1, 1.3);
 % powerCorrection = @(P) P;
 
-% Propeller Parameters
-D = 7*.0254; % meters;
-A_prop = (D/2)^2*pi;
-CT = .1448; %(Thrust in N = CT*rho*rps^2*D^4)
-CQ = .0106; % (Torque in N*m = CQ*rho*rps^2*D^5)
-RPSMax = 341;
-TMax = CT*rho*RPSMax^2*D^4;
+
+% Lifter Propeller Parameters
+D_lifter = 8*.0254; % meters;
+A_prop_lifter = (D_lifter/2)^2*pi;
+CT_lifter = .1448; %(Thrust in N = CT*rho*rps^2*D^4)
+CQ_lifter = .0106; % (Torque in N*m = CQ*rho*rps^2*D^5)
+RPSMax_lifter = 341;
+TMax_lifter = CT_lifter*rho*RPSMax_lifter^2*D_lifter^4;
+
+% Thruster Propeller Parameters
+D_thruster = 7*.0254; % meters;
+A_prop_thruster = (D_thruster/2)^2*pi;
+CT_thruster = .1448; %(Thrust in N = CT*rho*rps^2*D^4)
+CQ_thruster = .0106; % (Torque in N*m = CQ*rho*rps^2*D^5)
+RPSMax_thruster = 341;
+TMax_thruster = CT_thruster*rho*RPSMax_thruster^2*D_thruster^4;
 
 % Propeller Model Parameters
 
@@ -93,25 +134,46 @@ sigma_rotor  = 0.15;
 
 %% Propeller Properties calculation
 
+ 
+% For Lifters
+
 % Calculates required RPS from thrust in static conditions
-rotorRPS_fun = @(T) sqrt(T./(CT*rho*D^4));
+rotorRPS_fun_lifter = @(T) sqrt(T./(CT_lifter*rho*D_lifter^4));
 
 % Use hover properties to derive profile coefficients
-[Ph, ~] = calculate_rotor_vertical_flight_power(W/N_lift,0,rho,A_prop);
-RPS_h = rotorRPS_fun(W/N_lift);
+[Ph_lifter, ~] = calculate_rotor_vertical_flight_power(W/N_lift,0,rho,A_prop_lifter);
+RPS_h_lifter = rotorRPS_fun_lifter(W/N_lift);
 % Subtract ideal power from disk actuator theory from measured power to get
 % profile power coefficients
-P0_per = (2*pi*CQ)*(rho*RPS_h^3*D^5) - Ph;
-Cd0_rotor = 32*P0_per/(sigma_rotor*pi^4*rho*RPS_h^3*D^5);
+P0_per_lifter = (2*pi*CQ_lifter)*(rho*RPS_h_lifter^3*D_lifter^5) - Ph_lifter;
+Cd0_rotor_lifter = 32*P0_per_lifter/(sigma_rotor*pi^4*rho*RPS_h_lifter^3*D_lifter^5);
 % P0 = N_lift * calculate_rotor_profile_power(0,rho, 2*pi*RPS_h ,D/2, sigma_rotor, Cd0_rotor);
 
-% Calculates Power per Thruster Rotor
-thrusterPower = @(T,V,alpha) calculate_rotor_vertical_flight_power(T, V , rho, A_prop) + ...
-    calculate_rotor_profile_power(V,rho, 2*pi*rotorRPS_fun(T),D/2, sigma_rotor, Cd0_rotor);
-
 % Calculates Power per Lifter Rotor
-lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho, A_prop) + ...
-    calculate_rotor_profile_power(V,rho, 2*pi*rotorRPS_fun(T),D/2, sigma_rotor, Cd0_rotor);
+lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho, A_prop_lifter) + ...
+    calculate_rotor_profile_power(V,rho, 2*pi*rotorRPS_fun_lifter(T),D_lifter/2, sigma_rotor, Cd0_rotor_lifter);
+
+
+
+% For Thruster
+
+% Calculates required RPS from thrust in static conditions
+rotorRPS_fun_thruster = @(T) sqrt(T./(CT_thruster*rho*D_thruster^4));
+
+% Use hover properties to derive profile coefficients
+[Ph_thruster, ~] = calculate_rotor_vertical_flight_power(W/N_lift,0,rho,A_prop_thruster);
+RPS_h_thruster = rotorRPS_fun_thruster(W/N_lift);
+% Subtract ideal power from disk actuator theory from measured power to get
+% profile power coefficients
+P0_per_thruster = (2*pi*CQ_thruster)*(rho*RPS_h_thruster^3*D_thruster^5) - Ph_thruster;
+Cd0_rotor_thruster = 32*P0_per_thruster/(sigma_rotor*pi^4*rho*RPS_h_thruster^3*D_thruster^5);
+% P0 = N_lift * calculate_rotor_profile_power(0,rho, 2*pi*RPS_h ,D/2, sigma_rotor, Cd0_rotor);
+
+
+% Calculates Power per Thruster Rotor
+thrusterPower = @(T,V,alpha) calculate_rotor_vertical_flight_power(T, V , rho, A_prop_thruster) + ...
+    calculate_rotor_profile_power(V,rho, 2*pi*rotorRPS_fun_thruster(T),D_thruster/2, sigma_rotor, Cd0_rotor_thruster);
+
 
 
 %% Ascent
@@ -119,7 +181,7 @@ lifterPower = @(T,V,alpha) calculate_rotor_forward_flight_power(T, V, alpha, rho
 % Choose target altitude and ascent speed
 altCruise = 100; % m
 
-MaxAcc = (TMax*N_lift - W)/mass;
+MaxAcc = (TMax_lifter*N_lift - W)/mass;
 AscentSpeedList = linspace(2,15,5);
 AscentAccList = linspace(1,MaxAcc,5);
 
@@ -215,7 +277,7 @@ for ind1 = 1:length(CruiseAoAList)
             CruiseLiftDeficit = 0;
         end
         
-        CruiseRPM = rotorRPS_fun(CruiseLiftDeficit/N_lift)*60;
+        CruiseRPM = rotorRPS_fun_lifter(CruiseLiftDeficit/N_lift)*60;
         
         if ind2 == length(CruiseSpeedList)
             CruisePower(ind1,ind2) = powerCorrection(N_thrust*...
@@ -235,7 +297,7 @@ end
 figure(2)
 
 % Plot results
-surf(rad2deg(repmat(CruiseAoAList',[1,size(CruiseSpeedList,2)])),CruiseSpeedList,CruiseEffectiveDragSearch)
+surf(rad2deg(repmat(CruiseAoAList',[1,size(CruiseSpeedList,2)])),CruiseSpeedList,CruiseEffectiveDragSearch,'FaceAlpha',0.5)
 title('Power consumption of different cruise configurations','interpreter','Latex')
 xlabel('Angle of Attack (deg)','interpreter','Latex')
 ylabel('Cruise Speed $\frac{m}{s}$','interpreter','Latex')
@@ -319,7 +381,7 @@ AccAoAList = deg2rad(linspace(-4,10,29));
 % possible
 
 options = optimoptions('fsolve','Display','none');
-T = @(V) fsolve(@(T) T/2*(V + sqrt(V.^2 + 2*T/(rho*A_prop))) - TMax^(3/2)/sqrt(2*rho*A_prop),TMax,options);
+T = @(V) fsolve(@(T) T/2*(V + sqrt(V.^2 + 2*T/(rho*A_prop_thruster))) - TMax_thruster^(3/2)/sqrt(2*rho*A_prop_thruster),TMax_thruster,options);
 
 Vmax = zeros(size(AccAoAList));
 AccEnergy = zeros(size(AccAoAList));
@@ -342,9 +404,9 @@ for ind1 = 1:length(AccAoAList)
         
         % System Dynamics
         f = @(t,x) [x(2);
-            (N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),rotorRPS_fun(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/N_lift)*60))/mass];
+            (N_thrust*T(x(2)) - Drag(x(2),AccAoAList(ind1),rotorRPS_fun_thruster(max([0,(W - Lift(x(2),AccAoAList(ind1)))])/N_lift)*60))/mass];
          
-        optionsAcc = odeset('RelTol',1e-6,'Events',@(t,x)  accEventFun(t,x(2) - TargetCruiseSpeed));
+        optionsAcc = odeset('RelTol',1e-8,'Events',@(t,x)  accEventFun(t,x(2) - TargetCruiseSpeed));
         % Simulate over long timespan
         [t,x,te,xe]  = ode45(f,[0,100],[0,0]',optionsAcc);
    
@@ -366,7 +428,7 @@ for ind1 = 1:length(AccAoAList)
         
         % Integrate to find total energy consumption
         AccEnergy(ind1) = integral(@(tSample)...
-            powerCorrection(N_thrust*thrusterPower(TMax,AccSpeedProfile(tSample),AccAoAList(ind1)) + AccLifterTotalPower(tSample)),0,te);
+            powerCorrection(N_thrust*thrusterPower(TMax_thruster,AccSpeedProfile(tSample),AccAoAList(ind1)) + AccLifterTotalPower(tSample)),0,te);
         
     else
         % If desired cruise speed is not reachable, make energy
