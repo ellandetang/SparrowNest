@@ -1,3 +1,5 @@
+% Parses Data into 
+
 clear
 close all
 clc
