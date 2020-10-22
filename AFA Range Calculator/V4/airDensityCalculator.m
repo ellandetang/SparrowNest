@@ -3,9 +3,9 @@ close all
 
 % Source: https://en.wikipedia.org/wiki/Density_of_air#Humid_air
 
-phi = 1; % Relative humidity
-p = 101325; % Measured Air Pressure
-T = 15 + 273.15; % temperature in Kelvin
+phi = .064; % Relative humidity
+p = 994500; % Measured Air Pressure
+T = 17.3889 + 273.15; % temperature in Kelvin
 
 p_sat = 6.102*10.^(7.5*(T - 273.15)./(T - 273.15 + 237.8))*100;
 
