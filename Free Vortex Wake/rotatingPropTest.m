@@ -1,6 +1,6 @@
 % Define a fixed wing with linear airfoil along its span to test rollup etc
 
-% Added drawing filament based on strength and cross member filament
+% Vectorize local blade angle of attack and freestream velocity
 
 clear
 close all
@@ -13,22 +13,39 @@ clc
 % kutta jukowski: L/span = rho V Gamma
 % Cl(alpha) = 2*pi*alpha (radians)
 
+
+rotZ = @(theta) [cos(theta) -sin(theta) 0;
+    sin(theta) cos(theta) 0;
+    0 0 1];
+
 rho = 1.225; % air density kg/m^3
 
 % Create initial setup
 b = 2; % wingspan (m)
 chord = @(y) .1*ones(size(y)); % chord as a function of span location (m)
-n = 41; % number of wing divisions,shedding and calculation happens at the divisions
-m = 40; % number of filament divisions
-U = 10; % forward flight speed m/s
+n = 21; % number of wing divisions,shedding and calculation happens at the divisions
+m = 20; % number of filament divisions
+U = [0,0,1]'; % Free stream velocity vector, m/s
+Umag = norm(U); % forward flight speed m/s
 alpha = @(y) deg2rad(5)*ones(size(y)); % geometric angle of attack as a function of span location (radians)
 dt = .5; % time step time (s)
 nT = 200; % number of time steps
 
-wingControlPoints = linspace(-b/2,b/2,n+1);
+omega = [0 0 -1000]'*pi/30; % Rotaional speed, rad/s
+
+
+% Define Airfoil Curve
+bandReject = @(in,width,slope) (tanh(slope*(-in-width/2))+1)/2 + (tanh(slope*(in-width/2))+1)/2;
+bandPass = @(in,width,slope) -(tanh(slope*(in-width/2))+1)/2 + (tanh(slope*(in+width/2))+1)/2;
+transitionWidth = 14;
+linearWidth = 29;
+CL = @(aoa) bandPass(aoa,deg2rad(linearWidth),8/deg2rad(transitionWidth)).*(aoa*2*pi) + ...
+    bandReject(aoa,deg2rad(linearWidth),8/deg2rad(transitionWidth)).*1.15.*sin(2*aoa);
+
+% wingControlPoints = linspace(-b/2,b/2,n+1);
+wingControlPoints = [linspace(-b/2,-b/2*.15,(n+1)/2),linspace(b/2*.15,b/2,(n+1)/2)];
 
 targetIndices = 1:m:(m*(n+1)); % The start index of each filament
-
 
 
 % Free filaments, fixed filements
@@ -46,8 +63,19 @@ FixedEndPoints = [zeros(1,n);wingControlPoints(2:end);zeros(1,n)];
 % Points at which to calculate aoa and the like
 FixedSamplePoints = (FixedStartPoints + FixedEndPoints)/2;
 
-CL = 2*pi*alpha(FixedSamplePoints(2,:));
-FixedGamma = 1/2*U*CL.*chord(FixedSamplePoints(2,:));
+% local X-Y vectors for wing sections
+sectionX = repmat([cosd(5),0,-sind(5)]',[1,size(FixedSamplePoints,2)]);
+sectionX(:,1:10) = repmat([-cosd(5),0,-sind(5)]',[1,10]);
+sectionY = repmat([-sind(5),0,-cosd(5)]',[1,size(FixedSamplePoints,2)]);
+sectionY(:,1:10) = repmat([sind(5),0,-cosd(5)]',[1,10]);
+
+% Initialize Wing Vorticity
+localBladeVelocity = cross(repmat(omega,[1,size(FixedSamplePoints,2)]),FixedSamplePoints,1);
+sectionVelocity = localBladeVelocity-repmat(U,[1,size(FixedSamplePoints,2)]);
+FixedAlpha = -atan2(dot(sectionY,sectionVelocity,1),dot(sectionX,sectionVelocity,1));
+FixedCL = CL(FixedAlpha);
+FixedGamma = 1/2*Umag*FixedCL.*chord(FixedSamplePoints(2,:));
+FixedGamma((n+1)/2) = 0;
 GammaList = -diff([0,FixedGamma,0]);
 
 FixedRc = zeros(1,n);
@@ -55,8 +83,8 @@ FixedRc = zeros(1,n);
 % Define filament initial positions (strait lines propagated in the flow
 for ind1 = 1:n+1
     
-    FreeStartPoints = [FreeStartPoints,[-U*(0:dt:(m-1)*dt); repmat(wingControlPoints(ind1),[1,m]);zeros(1,m)]];
-    FreeEndPoints = [FreeEndPoints,[-U*(dt:dt:m*dt); repmat(wingControlPoints(ind1),[1,m]);zeros(1,m)]];
+    FreeStartPoints = [FreeStartPoints,kron((0:dt:(m-1)*dt),U)+repmat([0,wingControlPoints(ind1),0]',[1,m])];
+    FreeEndPoints = [FreeEndPoints,kron((dt:dt:m*dt),U)+repmat([0,wingControlPoints(ind1),0]',[1,m])];
     
     FreeFilamentIndex = [FreeFilamentIndex,ind1*ones(1,m)];
     FreeGamma = [FreeGamma,GammaList(ind1)*ones(1,m)];
@@ -82,12 +110,24 @@ FreeEndPointsStore = [];
 % Iterate on positions
 for ind2 = 1:nT
     
+    % Select filaments to use to reduce computation
+    selectedFilaments = find(abs(Gamma) > .01*max(abs(Gamma)));
+    samplePoints = FreeStartPoints;
+    
     % From present filaments, calculate new vorticities on the wing
-    VFixed = batchBiotSavart(startPoints,endPoints,Gamma,Rc,FixedSamplePoints);
-    FixedAlpha = alpha(FixedSamplePoints(2,:)) + atan2(VFixed(3,:),-(VFixed(1,:)-U));
-    FixedCL = 2*pi*FixedAlpha;
+    VFixed = batchBiotSavart(startPoints(:,selectedFilaments),endPoints(:,selectedFilaments),...
+        Gamma(:,selectedFilaments),Rc(:,selectedFilaments),FixedSamplePoints);
+    if any(isnan(VFixed),'all')
+       keyboard 
+    end
+    % FixedAlpha = alpha(FixedSamplePoints(2,:)) + atan2(VFixed(3,:),-(VFixed(1,:)-Umag));
+    localBladeVelocity = cross(repmat(omega,[1,size(FixedSamplePoints,2)]),FixedSamplePoints,1);
+    sectionVelocity = localBladeVelocity -(VFixed+repmat(U,[1,size(VFixed,2)]));
+    FixedAlpha = -atan2(dot(sectionY,sectionVelocity,1),dot(sectionX,sectionVelocity,1));
+    FixedCL = CL(FixedAlpha);
     FixedGamma_Old = FixedGamma;
-    FixedGamma = 1/2*U*FixedCL.*chord(FixedSamplePoints(2,:));
+    FixedGamma = 1/2*Umag*FixedCL.*chord(FixedSamplePoints(2,:));
+    FixedGamma((n+1)/2) = 0;
     GammaList = -diff([0,FixedGamma,0]);
     
     % Propagate the vorticities along the filament
@@ -106,15 +146,13 @@ for ind2 = 1:nT
     CrossGamma(targetIndices(1:end-1)) = FixedGamma_Old - FixedGamma;
     
     % Calculate Induced Velocities
-    % Select filaments to use to reduce computation
-    selectedFilaments = find(abs(Gamma) > .01*max(abs(Gamma)));
-    samplePoints = FreeStartPoints;
+    
     V = batchBiotSavart(...
         startPoints(:,selectedFilaments),endPoints(:,selectedFilaments),...
         Gamma(:,selectedFilaments),Rc(:,selectedFilaments),samplePoints);
     
     % Calculate timestepped vortex point locations (Forward Euler)
-    FreeUpdate = FreeStartPoints + dt*(V + repmat([-U,0,0]',[1,size(V,2)]));
+    FreeUpdate = FreeStartPoints + dt*(V + repmat(U,[1,size(V,2)]));
     
     % Reassign filament locations
     FreeEndPoints = FreeUpdate;
@@ -128,11 +166,57 @@ for ind2 = 1:nT
     CrossStartPoints = FreeEndPoints(:,1:end-m);
     CrossEndPoints = FreeEndPoints(:,(m+1):end);
     
+    % Update blade location
+    FixedStartPoints = rotZ(omega(3)*dt)*FixedStartPoints;
+    FixedEndPoints = rotZ(omega(3)*dt)*FixedEndPoints;
+    FixedSamplePoints = (FixedStartPoints + FixedEndPoints)/2;
+    
     % Compile Results
     startPoints = [FixedStartPoints,FreeStartPoints,CrossStartPoints];
     endPoints = [FixedEndPoints,FreeEndPoints,CrossEndPoints];
     Gamma = [FixedGamma,FreeGamma,CrossGamma];
     Rc = [FixedRc,FreeRc,CrossRc];
+    
+    
+keyboard
+clf
+GammaMax = max(abs(Gamma));
+GammaScaleF = @(in) interp1([0 GammaMax],[0,1],abs(in));
+for ind4 = 1:n+1
+    
+    filamentStart = FreeStartPoints(:,targetIndices(ind4)+(0:m-1));
+    filamentEnd = FreeEndPoints(:,targetIndices(ind4)+(0:m-1));
+    filamentGamma = FreeGamma(targetIndices(ind4)+(0:m-1));
+    for ind6 = 1:size(filamentStart,2)
+        line([filamentStart(1,ind6),filamentEnd(1,ind6)]',...
+            [filamentStart(2,ind6),filamentEnd(2,ind6)]',...
+            [filamentStart(3,ind6),filamentEnd(3,ind6)]',...
+            'marker','.','markersize',5,...
+            'linewidth',.5,...
+            'color',[1-GammaScaleF(filamentGamma(ind6)),0,GammaScaleF(filamentGamma(ind6))]);
+    end
+    
+end
+
+for ind8 = 1:size(CrossStartPoints,2)
+    line([CrossStartPoints(1,ind8),CrossEndPoints(1,ind8)]',...
+        [CrossStartPoints(2,ind8),CrossEndPoints(2,ind8)]',...
+        [CrossStartPoints(3,ind8),CrossEndPoints(3,ind8)]',...
+        'marker','.','markersize',5,...
+        'linewidth',.5,...
+        'color',[1-GammaScaleF(CrossGamma(ind8)),0,GammaScaleF(CrossGamma(ind8))]);
+end
+
+
+view(45,45)
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
+grid on
+% axis equal
+ax = gca;
+set(ax,'YDir','reverse','ZDir','reverse');
+
 end
 
 %%
