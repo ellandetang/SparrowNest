@@ -1,0 +1,17 @@
+batchBiotSavart_mex.mexw64
+batchBiotSavart		batchBiotSavart
+batchBiotSavart_atexit		batchBiotSavart_atexit
+batchBiotSavart_initialize		batchBiotSavart_initialize
+batchBiotSavart_terminate		batchBiotSavart_terminate
+emlrtMexFcnProperties		emlrtMexFcnProperties
+emxEnsureCapacity_boolean_T		emxEnsureCapacity_boolean_T
+emxEnsureCapacity_int32_T		emxEnsureCapacity_int32_T
+emxEnsureCapacity_real_T		emxEnsureCapacity_real_T
+emxFree_boolean_T		emxFree_boolean_T
+emxFree_int32_T		emxFree_int32_T
+emxFree_real_T		emxFree_real_T
+emxInit_boolean_T		emxInit_boolean_T
+emxInit_int32_T		emxInit_int32_T
+emxInit_real_T		emxInit_real_T
+mexFunction		mexFunction
+mexfilerequiredapiversion		mexfilerequiredapiversion

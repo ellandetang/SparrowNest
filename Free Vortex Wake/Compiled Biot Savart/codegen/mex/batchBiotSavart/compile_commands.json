@@ -1,0 +1,116 @@
+[
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   batchBiotSavart_data.c -Fobuild\\win64\\batchBiotSavart_data.obj",
+    "file": "batchBiotSavart_data.c",
+    "output": "build/win64/batchBiotSavart_data.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   rt_nonfinite.c -Fobuild\\win64\\rt_nonfinite.obj",
+    "file": "rt_nonfinite.c",
+    "output": "build/win64/rt_nonfinite.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   batchBiotSavart_initialize.c -Fobuild\\win64\\batchBiotSavart_initialize.obj",
+    "file": "batchBiotSavart_initialize.c",
+    "output": "build/win64/batchBiotSavart_initialize.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   batchBiotSavart_terminate.c -Fobuild\\win64\\batchBiotSavart_terminate.obj",
+    "file": "batchBiotSavart_terminate.c",
+    "output": "build/win64/batchBiotSavart_terminate.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   batchBiotSavart.c -Fobuild\\win64\\batchBiotSavart.obj",
+    "file": "batchBiotSavart.c",
+    "output": "build/win64/batchBiotSavart.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   power.c -Fobuild\\win64\\power.obj",
+    "file": "power.c",
+    "output": "build/win64/power.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   eml_int_forloop_overflow_check.c -Fobuild\\win64\\eml_int_forloop_overflow_check.obj",
+    "file": "eml_int_forloop_overflow_check.c",
+    "output": "build/win64/eml_int_forloop_overflow_check.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   sum.c -Fobuild\\win64\\sum.obj",
+    "file": "sum.c",
+    "output": "build/win64/sum.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   repmat.c -Fobuild\\win64\\repmat.obj",
+    "file": "repmat.c",
+    "output": "build/win64/repmat.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   assertValidSizeArg.c -Fobuild\\win64\\assertValidSizeArg.obj",
+    "file": "assertValidSizeArg.c",
+    "output": "build/win64/assertValidSizeArg.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   dot.c -Fobuild\\win64\\dot.obj",
+    "file": "dot.c",
+    "output": "build/win64/dot.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   cross.c -Fobuild\\win64\\cross.obj",
+    "file": "cross.c",
+    "output": "build/win64/cross.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   interface\\_coder_batchBiotSavart_api.c -Fobuild\\win64\\_coder_batchBiotSavart_api.obj",
+    "file": "interface/_coder_batchBiotSavart_api.c",
+    "output": "build/win64/_coder_batchBiotSavart_api.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   interface\\_coder_batchBiotSavart_mex.c -Fobuild\\win64\\_coder_batchBiotSavart_mex.obj",
+    "file": "interface/_coder_batchBiotSavart_mex.c",
+    "output": "build/win64/_coder_batchBiotSavart_mex.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   sqrt.c -Fobuild\\win64\\sqrt.obj",
+    "file": "sqrt.c",
+    "output": "build/win64/sqrt.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   batchBiotSavart_emxutil.c -Fobuild\\win64\\batchBiotSavart_emxutil.obj",
+    "file": "batchBiotSavart_emxutil.c",
+    "output": "build/win64/batchBiotSavart_emxutil.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   interface\\_coder_batchBiotSavart_info.c -Fobuild\\win64\\_coder_batchBiotSavart_info.obj",
+    "file": "interface/_coder_batchBiotSavart_info.c",
+    "output": "build/win64/_coder_batchBiotSavart_info.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   \"F:\\Program Files\\MATLAB\\R2020b\\extern\\version\\c_mexapi_version.c\" -Fobuild\\win64\\c_mexapi_version.obj",
+    "file": "F:/Program Files/MATLAB/R2020b/extern/version/c_mexapi_version.c",
+    "output": "build/win64/c_mexapi_version.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   \"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\mex\\lccstub.c\" -Fobuild\\win64\\lccstub.obj",
+    "file": "F:/Program Files/MATLAB/R2020b/sys/lcc64/lcc64/mex/lccstub.c",
+    "output": "build/win64/lccstub.obj"
+  }
+]

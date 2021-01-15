@@ -1,0 +1,58 @@
+# CompilerName=lcc64
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root\build\win64
+matlabdir = F:\Program Files\MATLAB\R2020b
+startdir = E:\Desktop\Git\SparrowNest\Free Vortex Wake\Compiled Biot Savart
+
+# Toolchain information
+cc = lcc64
+cxx = 
+linker = lcclnk64
+linkerxx = 
+
+cflags =  -nodeclspec -Zp8 -dll -c -I"$matlabdir\sys\lcc64\lcc64\include64" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I"$root" -I"$startdir" -I"$root\interface" -I"$matlabdir\extern\include" -I"." -DMODEL=batchBiotSavart_mex  
+
+cxxflags =  -I"$root" -I"$startdir" -I"$root\interface" -I"$matlabdir\extern\include" -I"." -DMODEL=batchBiotSavart_mex  
+
+ldflags =  -dll -L"$matlabdir\sys\lcc64\lcc64\lib64" -L"$matlabdir\extern\lib\win64\microsoft" -entry LibMain libmx.lib libmex.lib libmat.lib libemlrt.lib libcovrt.lib libut.lib libmwmathutil.lib -o batchBiotSavart_mex.mexw64 -s  batchBiotSavart_mex.def
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -Fo$out
+
+rule cxx
+    command = $cxx $cxxflags $in -Fo$out
+
+rule link
+    command = $linker $in $ldflags
+
+rule linkxx
+    command = $linkerxx $in $ldflags
+
+# Build
+build $builddir\batchBiotSavart_data.obj : cc $root\batchBiotSavart_data.c
+build $builddir\rt_nonfinite.obj : cc $root\rt_nonfinite.c
+build $builddir\batchBiotSavart_initialize.obj : cc $root\batchBiotSavart_initialize.c
+build $builddir\batchBiotSavart_terminate.obj : cc $root\batchBiotSavart_terminate.c
+build $builddir\batchBiotSavart.obj : cc $root\batchBiotSavart.c
+build $builddir\power.obj : cc $root\power.c
+build $builddir\eml_int_forloop_overflow_check.obj : cc $root\eml_int_forloop_overflow_check.c
+build $builddir\sum.obj : cc $root\sum.c
+build $builddir\repmat.obj : cc $root\repmat.c
+build $builddir\assertValidSizeArg.obj : cc $root\assertValidSizeArg.c
+build $builddir\dot.obj : cc $root\dot.c
+build $builddir\cross.obj : cc $root\cross.c
+build $builddir\_coder_batchBiotSavart_api.obj : cc $root\interface\_coder_batchBiotSavart_api.c
+build $builddir\_coder_batchBiotSavart_mex.obj : cc $root\interface\_coder_batchBiotSavart_mex.c
+build $builddir\sqrt.obj : cc $root\sqrt.c
+build $builddir\batchBiotSavart_emxutil.obj : cc $root\batchBiotSavart_emxutil.c
+build $builddir\_coder_batchBiotSavart_info.obj : cc $root\interface\_coder_batchBiotSavart_info.c
+build $builddir\c_mexapi_version.obj : cc $matlabdir\extern\version\c_mexapi_version.c
+build $builddir\lccstub.obj : cc $matlabdir\sys\lcc64\lcc64\mex\lccstub.c
+
+# Link
+build $root\batchBiotSavart_mex.mexw64 : link $builddir\batchBiotSavart_data.obj $builddir\rt_nonfinite.obj $builddir\batchBiotSavart_initialize.obj $builddir\batchBiotSavart_terminate.obj $builddir\batchBiotSavart.obj $builddir\power.obj $builddir\eml_int_forloop_overflow_check.obj $builddir\sum.obj $builddir\repmat.obj $builddir\assertValidSizeArg.obj $builddir\dot.obj $builddir\cross.obj $builddir\_coder_batchBiotSavart_api.obj $builddir\_coder_batchBiotSavart_mex.obj $builddir\sqrt.obj $builddir\batchBiotSavart_emxutil.obj $builddir\_coder_batchBiotSavart_info.obj $builddir\c_mexapi_version.obj $builddir\lccstub.obj 

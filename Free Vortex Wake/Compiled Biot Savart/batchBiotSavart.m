@@ -55,11 +55,11 @@ h = sqrt(r1mag.^2.*(ones(n,m) - c1.^2));
 e = cross(l12,r1,3);
 emag = sqrt(sum(e.^2,3));
 
-try
-    AvMatrix = repmat(Gamma',[1,m])./(4*pi).*(h./(repmat(rc',[1,m]).^2 + h.^2)).*(c1 - c2)./emag;
-catch
-    keyboard
-end
+% try
+AvMatrix = repmat(Gamma',[1,m])./(4*pi).*(h./(repmat(rc',[1,m]).^2 + h.^2)).*(c1 - c2)./emag;
+% catch
+%     keyboard
+% end
 
 % Sanitize for samplepoints close to filaments
 AvMatrix(h == 0 | r1mag == 0 | r2mag == 0) = 0;
@@ -68,9 +68,9 @@ V_temp = sum(e.*repmat(AvMatrix,[1,1,3]),1);
 
 V = [V_temp(:,:,1);V_temp(:,:,2);V_temp(1,:,3)];
 
-if any(imag(V),'all') || any(isnan(V),'all') || any(isinf(V),'all') 
-    keyboard
-end
+% if any(imag(V),'all') || any(isnan(V),'all') || any(isinf(V),'all') 
+%     keyboard
+% end
 
 end
 
