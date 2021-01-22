@@ -16,8 +16,8 @@ rho = 1.225; % air density kg/m^3
 % Define Enfironment
 simulation.U = [-1,0,0]'; % Free stream velocity vector, m/s
 simulation.Umag = norm(simulation.U); % forward flight speed m/s
-simulation.dt = 1; % time step time (s)
-simulation.nT = 200; % number of time steps
+simulation.dt = .2; % time step time (s)
+simulation.nT = 100; % number of time steps
 
 simulation.startPoints = [];
 simulation.endPoints = [];
@@ -27,6 +27,7 @@ simulation.Rc = [];
 omega = [0 0 0]'*pi/30; % Rotaional speed, rad/s
 
 defineWing1
+defineWing2
 
 % Propagate through time
 for ind2 = 1:simulation.nT
@@ -37,10 +38,14 @@ for ind2 = 1:simulation.nT
     body = updateBody(body,simulation);
 
     % Compile Results for next step
-    simulation.startPoints = [body(1).FixedStartPoints,body(1).FreeStartPoints,body(1).CrossStartPoints];
-    simulation.endPoints = [body(1).FixedEndPoints,body(1).FreeEndPoints,body(1).CrossEndPoints];
-    simulation.Gamma = [body(1).FixedGamma,body(1).FreeGamma,body(1).CrossGamma];
-    simulation.Rc = [FixedRc,body(1).FreeRc,body(1).CrossRc];
+    simulation.startPoints = [body(1).FixedStartPoints,body(1).FreeStartPoints,body(1).CrossStartPoints,...
+        body(2).FixedStartPoints,body(2).FreeStartPoints,body(2).CrossStartPoints];
+    simulation.endPoints = [body(1).FixedEndPoints,body(1).FreeEndPoints,body(1).CrossEndPoints,...
+        body(2).FixedEndPoints,body(2).FreeEndPoints,body(2).CrossEndPoints];
+    simulation.Gamma = [body(1).FixedGamma,body(1).FreeGamma,body(1).CrossGamma,...
+        body(2).FixedGamma,body(2).FreeGamma,body(2).CrossGamma];
+    simulation.Rc = [FixedRc,body(1).FreeRc,body(1).CrossRc,...
+        FixedRc,body(2).FreeRc,body(2).CrossRc];
     
    
 end

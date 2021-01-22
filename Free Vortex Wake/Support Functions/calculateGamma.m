@@ -1,11 +1,13 @@
-function [body] = calculateGamma(body,simulation)
+function [body] = calculateGamma(body,simulation,indB)
 % take struct variable representing the body and the freestream velocity
 % and calculate the Circulation along the wing
-    sectionVelocity = repmat(simulation.U,[1,size(body(1).VInducedFixed,2)]) + body(1).VInducedFixed;
-    FixedAlpha = atan2(dot(body(1).sectionY,sectionVelocity,1),dot(-body(1).sectionX,sectionVelocity,1));
+
+    sectionVelocity = repmat(simulation.U,[1,size(body(indB).VInducedFixed,2)]) + body(indB).VInducedFixed;
+    sectionVelocityMag = sqrt(sum(sectionVelocity.^2,1));
+    FixedAlpha = atan2(dot(body(indB).sectionY,sectionVelocity,1),dot(-body(indB).sectionX,sectionVelocity,1));
     FixedCL = CLNACA0012(FixedAlpha);
-    body(1).FixedGamma_Old = body(1).FixedGamma;
-    body(1).FixedGamma = 1/2*simulation.Umag*FixedCL.*body(1).chord;
+    body(indB).FixedGamma_Old = body(indB).FixedGamma;
+    body(indB).FixedGamma = 1/2.*sectionVelocityMag.*FixedCL.*body(indB).chord;
     
 end
 

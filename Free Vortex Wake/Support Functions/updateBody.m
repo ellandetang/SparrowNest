@@ -1,54 +1,53 @@
 function body = updateBody(body,simulation)
 % Takes simulation state and update one body and propagate the states
 % forward in time
-
-% From present filaments, calculate new vorticities on the wing
-    body(1).VInducedFixed = batchBiotSavart_mex(simulation.startPoints(:,simulation.selectedFilaments),simulation.endPoints(:,simulation.selectedFilaments),...
-        simulation.Gamma(:,simulation.selectedFilaments),simulation.Rc(:,simulation.selectedFilaments),body(1).FixedSamplePoints);
-    body = calculateGamma(body,simulation);
+for indB = 1:length(body)
+    % From present filaments, calculate new vorticities on the wing
+    body(indB).VInducedFixed = batchBiotSavart_mex(simulation.startPoints(:,simulation.selectedFilaments),simulation.endPoints(:,simulation.selectedFilaments),...
+        simulation.Gamma(:,simulation.selectedFilaments),simulation.Rc(:,simulation.selectedFilaments),body(indB).FixedSamplePoints);
+    body = calculateGamma(body,simulation,indB);
     
     % Propagate the vorticities along the filament
-    for ind1 = 1:body(1).nWingSegments+1
-        body(1).FreeGamma(body(1).targetIndices(ind1)+(1:body(1).nFilamentSegments-1)) = ...
-        body(1).FreeGamma(body(1).targetIndices(ind1)+(0:body(1).nFilamentSegments-2));
+    for ind1 = 1:body(indB).nWingSegments+1
+        body(indB).FreeGamma(body(indB).targetIndices(ind1)+(1:body(indB).nFilamentSegments-1)) = ...
+            body(indB).FreeGamma(body(indB).targetIndices(ind1)+(0:body(indB).nFilamentSegments-2));
     end
     
     % Propagate the new vorticities to the filament
-    body(1).FreeGamma(body(1).targetIndices) = -diff([0,body(1).FixedGamma,0]);
+    body(indB).FreeGamma(body(indB).targetIndices) = -diff([0,body(indB).FixedGamma,0]);
     
     % Propagate vorticity along the cross filaments
-    for ind2 = 1:body(1).nWingSegments
-        body(1).CrossGamma(body(1).targetIndices(ind2)+(1:body(1).nFilamentSegments-1)) =...
-        body(1).CrossGamma(body(1).targetIndices(ind2)+(0:body(1).nFilamentSegments-2));
+    for ind2 = 1:body(indB).nWingSegments
+        body(indB).CrossGamma(body(indB).targetIndices(ind2)+(1:body(indB).nFilamentSegments-1)) =...
+            body(indB).CrossGamma(body(indB).targetIndices(ind2)+(0:body(indB).nFilamentSegments-2));
     end
     
-    body(1).CrossGamma(body(1).targetIndices(1:end-1)) = body(1).FixedGamma_Old - body(1).FixedGamma;
+    body(indB).CrossGamma(body(indB).targetIndices(1:end-1)) = body(indB).FixedGamma_Old - body(indB).FixedGamma;
     
     % Calculate Induced Velocities
     VInduced = batchBiotSavart_mex(...
         simulation.startPoints(:,simulation.selectedFilaments),simulation.endPoints(:,simulation.selectedFilaments),...
-        simulation.Gamma(:,simulation.selectedFilaments),simulation.Rc(:,simulation.selectedFilaments),body(1).FreeStartPoints);
+        simulation.Gamma(:,simulation.selectedFilaments),simulation.Rc(:,simulation.selectedFilaments),body(indB).FreeStartPoints);
     
     % Calculate timestepped vortex point locations (Forward Euler)
-    FreeUpdate = body(1).FreeStartPoints + simulation.dt*(VInduced + repmat(simulation.U,[1,size(VInduced,2)]));
+    FreeUpdate = body(indB).FreeStartPoints + simulation.dt*(VInduced + repmat(simulation.U,[1,size(VInduced,2)]));
     
     % Reassign filament locations
-    body(1).FreeEndPoints = FreeUpdate;
+    body(indB).FreeEndPoints = FreeUpdate;
     
     % Store Filament Positions
-    % body(1).FreeEndPointsStore(:,:,end+1) = body(1).FreeEndPoints; %
-
+    % body(indB).FreeEndPointsStore(:,:,end+1) = body(indB).FreeEndPoints; %
+    
     % Shift filament indices
-    for ind3 = 1:body(1).nWingSegments+1
-        body(1).FreeStartPoints(:,body(1).targetIndices(ind3)+(1:body(1).nFilamentSegments-1)) =...
-            FreeUpdate(:,body(1).targetIndices(ind3)+(0:body(1).nFilamentSegments-2));
+    for ind3 = 1:body(indB).nWingSegments+1
+        body(indB).FreeStartPoints(:,body(indB).targetIndices(ind3)+(1:body(indB).nFilamentSegments-1)) =...
+            FreeUpdate(:,body(indB).targetIndices(ind3)+(0:body(indB).nFilamentSegments-2));
     end
     
     % Adjust Cross Vorticity Locations
-    body(1).CrossStartPoints = body(1).FreeEndPoints(:,1:end-body(1).nFilamentSegments);
-    body(1).CrossEndPoints = body(1).FreeEndPoints(:,(body(1).nFilamentSegments+1):end);
-
-
+    body(indB).CrossStartPoints = body(indB).FreeEndPoints(:,1:end-body(indB).nFilamentSegments);
+    body(indB).CrossEndPoints = body(indB).FreeEndPoints(:,(body(indB).nFilamentSegments+1):end);
+end
 
 end
 

@@ -2,7 +2,7 @@ b = 1; % wingspan (m)
 chord = @(y) .1*ones(size(y)); % chord as a function of span location (m)
 
 body(2).nWingSegments = 21; % number of wing segments,shedding and calculation happens at the divisions
-body(2).nFilamentSegments = 20; % number of filament divisions
+body(2).nFilamentSegments = 40; % number of filament divisions
 
 body(2).targetIndices = 1:body(2).nFilamentSegments:(body(2).nFilamentSegments*(body(2).nWingSegments+1)); % The start index of each filament
 
@@ -10,9 +10,9 @@ body(2).targetIndices = 1:body(2).nFilamentSegments:(body(2).nFilamentSegments*(
 %% Fixed filements
 
 % Define wing filament segment End points
-wingSegmentPoints = linspace(-b/2,b/2,body(2).nWingSegments+1);
-body(2).FixedStartPoints = [ones(1,body(2).nWingSegments);wingSegmentPoints(1:end-1);zeros(1,body(2).nWingSegments)];
-body(2).FixedEndPoints = [ones(1,body(2).nWingSegments);wingSegmentPoints(2:end);zeros(1,body(2).nWingSegments)];
+wingSegmentPoints = [-1*ones(1,body(2).nWingSegments+1);linspace(-b/2,b/2,body(2).nWingSegments+1);-.05*ones(1,body(2).nWingSegments+1)];
+body(2).FixedStartPoints = wingSegmentPoints(:,1:end-1);
+body(2).FixedEndPoints = wingSegmentPoints(:,2:end);
 
 % Points at which to calculate aoa, set as section midpoint for not
 body(2).FixedSamplePoints = (body(2).FixedStartPoints + body(2).FixedEndPoints)/2;
@@ -31,7 +31,7 @@ body(2).FixedGamma = zeros(1,body(2).nWingSegments);
 % FixedAlpha = atan2(dot(body(2).sectionY,sectionVelocity,1),dot(-body(2).sectionX,sectionVelocity,1));
 % FixedCL = CLNACA0012(FixedAlpha);
 % body(2).FixedGamma = 1/2*Umag*FixedCL.*chord(body(2).FixedSamplePoints(2,:));
-body = calculateGamma(body,simulation);
+body = calculateGamma(body,simulation,2);
 GammaList = -diff([0,body(2).FixedGamma,0]);
 
 FixedRc = zeros(1,body(2).nWingSegments);
@@ -48,8 +48,12 @@ body(2).FreeEndPointsStore = [];
 % flow)
 for ind1 = 1:body(2).nWingSegments+1
     
-    body(2).FreeStartPoints = [body(2).FreeStartPoints,kron((0:simulation.dt:(body(2).nFilamentSegments-1)*simulation.dt),simulation.U)+repmat([0,wingSegmentPoints(ind1),0]',[1,body(2).nFilamentSegments])];
-    body(2).FreeEndPoints = [body(2).FreeEndPoints,kron((simulation.dt:simulation.dt:body(2).nFilamentSegments*simulation.dt),simulation.U)+repmat([0,wingSegmentPoints(ind1),0]',[1,body(2).nFilamentSegments])];
+    body(2).FreeStartPoints = [body(2).FreeStartPoints,...
+        kron((0:simulation.dt:(body(2).nFilamentSegments-1)*simulation.dt),simulation.U)+...
+        repmat(wingSegmentPoints(:,ind1),[1,body(2).nFilamentSegments])];
+    body(2).FreeEndPoints = [body(2).FreeEndPoints,...
+        kron((simulation.dt:simulation.dt:body(2).nFilamentSegments*simulation.dt),simulation.U)+...
+        repmat(wingSegmentPoints(:,ind1),[1,body(2).nFilamentSegments])];
     
     body(2).FreeFilamentIndex = [body(2).FreeFilamentIndex,ind1*ones(1,body(2).nFilamentSegments)];
     body(2).FreeGamma = [body(2).FreeGamma,GammaList(ind1)*ones(1,body(2).nFilamentSegments)];
