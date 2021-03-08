@@ -13,11 +13,11 @@ rotZ = @(theta) [cos(theta) -sin(theta) 0;
 
 rho = 1.225; % air density kg/m^3
 
-% Define Enfironment
+% Define Environment
 simulation.U = [-1,0,0]'; % Free stream velocity vector, m/s
-simulation.Umag = norm(simulation.U); % forward flight speed m/s
-simulation.dt = .2; % time step time (s)
-simulation.nT = 100; % number of time steps
+simulation.Umag = norm(simulation.U); % Forward flight speed m/s
+simulation.dt = .2; % Time step time (s)
+simulation.nT = 100; % Number of time steps
 
 simulation.startPoints = [];
 simulation.endPoints = [];
@@ -47,7 +47,6 @@ for ind2 = 1:simulation.nT
     simulation.Rc = [FixedRc,body(1).FreeRc,body(1).CrossRc,...
         FixedRc,body(2).FreeRc,body(2).CrossRc];
     
-   
 end
 
 plotResults(body)

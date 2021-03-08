@@ -1,5 +1,5 @@
 function body = updateBody(body,simulation)
-% Takes simulation state and update one body and propagate the states
+% Takes simulation state and updates each body and propagate the states
 % forward in time
 for indB = 1:length(body)
     % From present filaments, calculate new vorticities on the wing
