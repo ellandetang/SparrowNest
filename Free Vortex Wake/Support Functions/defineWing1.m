@@ -11,7 +11,7 @@ body(bodyIndex).nFilamentSegments = 40; % number of filament divisions
 body(bodyIndex).targetIndices = 1:body(bodyIndex).nFilamentSegments:(body(bodyIndex).nFilamentSegments*(body(bodyIndex).nWingSegments+1)); % The start index of each filament
 
 
-%% Fixed filements
+%% Fixed filaments
 
 % Define wing filament segment End points
 wingSegmentPoints = [0*ones(1,body(bodyIndex).nWingSegments+1);linspace(-b/2,b/2,body(bodyIndex).nWingSegments+1);0*ones(1,body(bodyIndex).nWingSegments+1)];
@@ -39,7 +39,7 @@ body(bodyIndex).FixedGamma = zeros(1,body(bodyIndex).nWingSegments);
 body = calculateGamma(body,simulation,1);
 GammaList = -diff([0,body(bodyIndex).FixedGamma,0]);
 
-FixedRc = zeros(1,body(bodyIndex).nWingSegments);
+body(bodyIndex).FixedRc = zeros(1,body(bodyIndex).nWingSegments);
 
 %% Free Filaments
 body(bodyIndex).FreeStartPoints = [];
@@ -76,5 +76,5 @@ body(bodyIndex).CrossRc = zeros(1,size(body(bodyIndex).CrossStartPoints,2));
 simulation.startPoints = [simulation.startPoints,body(bodyIndex).FixedStartPoints,body(bodyIndex).FreeStartPoints,body(bodyIndex).CrossStartPoints];
 simulation.endPoints = [simulation.endPoints,body(bodyIndex).FixedEndPoints,body(bodyIndex).FreeEndPoints,body(bodyIndex).CrossEndPoints];
 simulation.Gamma = [simulation.Gamma,body(bodyIndex).FixedGamma,body(bodyIndex).FreeGamma,body(bodyIndex).CrossGamma];
-simulation.Rc = [simulation.Rc,FixedRc,body(bodyIndex).FreeRc,body(bodyIndex).CrossRc];
+simulation.Rc = [simulation.Rc,body(bodyIndex).FixedRc,body(bodyIndex).FreeRc,body(bodyIndex).CrossRc];
 

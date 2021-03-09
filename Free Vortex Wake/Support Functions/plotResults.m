@@ -8,13 +8,18 @@ for indB = 1:length(body)
     if GammaSup>GammaMax
         GammaMax = GammaSup;
     end
-    GammaScaleF = @(in) interp1([0 GammaMax],[0,1],abs(in));
 end
+
+if GammaMax == 0
+    GammaMax = 1;
+end
+
+GammaScaleF = @(in) interp1([0 GammaMax],[0,1],abs(in));
 
 for indB = 1:length(body)
     
     % Plot trailing vortices
-    for ind1 = 1:(body(indB).nWingSegments+1)       
+    for ind1 = 1:(body(indB).nWingSegments+1)
         filamentStart = body(indB).FreeStartPoints(:,body(indB).targetIndices(ind1)+(0:body(indB).nFilamentSegments-1));
         filamentEnd = body(indB).FreeEndPoints(:,body(indB).targetIndices(ind1)+(0:body(indB).nFilamentSegments-1));
         filamentGamma = body(indB).FreeGamma(body(indB).targetIndices(ind1)+(0:body(indB).nFilamentSegments-1));
@@ -25,7 +30,7 @@ for indB = 1:length(body)
                 'marker','.','markersize',5,...
                 'linewidth',.5,...
                 'color',[1-GammaScaleF(filamentGamma(ind3)),0,GammaScaleF(filamentGamma(ind3))]);
-        end       
+        end
     end
     
     % Plot cross vortex points
