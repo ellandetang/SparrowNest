@@ -19,32 +19,32 @@
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
-static emlrtRSInfo hb_emlrtRSI = { 28, /* lineNo */
+static emlrtRSInfo lb_emlrtRSI = { 28, /* lineNo */
   "repmat",                            /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pathName */
 };
 
-static emlrtRSInfo ib_emlrtRSI = { 64, /* lineNo */
+static emlrtRSInfo mb_emlrtRSI = { 64, /* lineNo */
   "repmat",                            /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pathName */
 };
 
-static emlrtRSInfo jb_emlrtRSI = { 69, /* lineNo */
+static emlrtRSInfo nb_emlrtRSI = { 69, /* lineNo */
   "repmat",                            /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pathName */
 };
 
-static emlrtRSInfo kb_emlrtRSI = { 71, /* lineNo */
+static emlrtRSInfo ob_emlrtRSI = { 71, /* lineNo */
   "repmat",                            /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pathName */
 };
 
-static emlrtRSInfo lb_emlrtRSI = { 66, /* lineNo */
+static emlrtRSInfo pb_emlrtRSI = { 66, /* lineNo */
   "repmat",                            /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pathName */
 };
 
-static emlrtRTEInfo gc_emlrtRTEI = { 59,/* lineNo */
+static emlrtRTEInfo kc_emlrtRTEI = { 59,/* lineNo */
   28,                                  /* colNo */
   "repmat",                            /* fName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elmat\\repmat.m"/* pName */
@@ -63,28 +63,28 @@ void b_repmat(const emlrtStack *sp, const emxArray_real_T *a, const real_T
   int32_T ntilerows;
   st.prev = sp;
   st.tls = sp->tls;
-  st.site = &hb_emlrtRSI;
+  st.site = &lb_emlrtRSI;
   b_st.prev = &st;
   b_st.tls = st.tls;
   assertValidSizeArg(&st, varargin_1);
   ncols = b->size[0] * b->size[1];
   b->size[0] = (int32_T)varargin_1[0];
   b->size[1] = a->size[1];
-  emxEnsureCapacity_real_T(sp, b, ncols, &gc_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, b, ncols, &kc_emlrtRTEI);
   ncols = a->size[1];
   ntilerows = (int32_T)varargin_1[0];
-  st.site = &ib_emlrtRSI;
-  st.site = &lb_emlrtRSI;
+  st.site = &mb_emlrtRSI;
+  st.site = &pb_emlrtRSI;
   if ((1 <= a->size[1]) && (a->size[1] > 2147483646)) {
-    b_st.site = &ab_emlrtRSI;
+    b_st.site = &eb_emlrtRSI;
     check_forloop_overflow_error(&b_st);
   }
 
   for (jcol = 0; jcol < ncols; jcol++) {
     ibmat = jcol * ntilerows;
-    st.site = &jb_emlrtRSI;
+    st.site = &nb_emlrtRSI;
     if ((1 <= ntilerows) && (ntilerows > 2147483646)) {
-      b_st.site = &ab_emlrtRSI;
+      b_st.site = &eb_emlrtRSI;
       check_forloop_overflow_error(&b_st);
     }
 
@@ -115,24 +115,24 @@ void c_repmat(const emlrtStack *sp, const emxArray_real_T *a, emxArray_real_T *b
   b->size[0] = a->size[0];
   b->size[1] = a->size[1];
   b->size[2] = 3;
-  emxEnsureCapacity_real_T(sp, b, nrows, &gc_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, b, nrows, &kc_emlrtRTEI);
   nrows = a->size[0];
   ncols = a->size[1];
   overflow = ((1 <= a->size[1]) && (a->size[1] > 2147483646));
   for (jtilecol = 0; jtilecol < 3; jtilecol++) {
     ibtile = jtilecol * (nrows * ncols) - 1;
-    st.site = &lb_emlrtRSI;
+    st.site = &pb_emlrtRSI;
     if (overflow) {
-      b_st.site = &ab_emlrtRSI;
+      b_st.site = &eb_emlrtRSI;
       check_forloop_overflow_error(&b_st);
     }
 
     for (jcol = 0; jcol < ncols; jcol++) {
       iacol_tmp = jcol * nrows;
       ibmat = ibtile + iacol_tmp;
-      st.site = &kb_emlrtRSI;
+      st.site = &ob_emlrtRSI;
       if ((1 <= nrows) && (nrows > 2147483646)) {
-        b_st.site = &ab_emlrtRSI;
+        b_st.site = &eb_emlrtRSI;
         check_forloop_overflow_error(&b_st);
       }
 
@@ -155,28 +155,28 @@ void repmat(const emlrtStack *sp, const emxArray_real_T *a, const real_T
   int32_T ntilecols;
   st.prev = sp;
   st.tls = sp->tls;
-  st.site = &hb_emlrtRSI;
+  st.site = &lb_emlrtRSI;
   b_st.prev = &st;
   b_st.tls = st.tls;
   assertValidSizeArg(&st, varargin_1);
   nrows = b->size[0] * b->size[1];
   b->size[0] = a->size[0];
   b->size[1] = (int32_T)varargin_1[1];
-  emxEnsureCapacity_real_T(sp, b, nrows, &gc_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, b, nrows, &kc_emlrtRTEI);
   nrows = a->size[0];
   ntilecols = (int32_T)varargin_1[1];
-  st.site = &ib_emlrtRSI;
+  st.site = &mb_emlrtRSI;
   if ((1 <= (int32_T)varargin_1[1]) && ((int32_T)varargin_1[1] > 2147483646)) {
-    b_st.site = &ab_emlrtRSI;
+    b_st.site = &eb_emlrtRSI;
     check_forloop_overflow_error(&b_st);
   }
 
   for (jtilecol = 0; jtilecol < ntilecols; jtilecol++) {
     ibtile = jtilecol * nrows;
-    st.site = &jb_emlrtRSI;
-    st.site = &kb_emlrtRSI;
+    st.site = &nb_emlrtRSI;
+    st.site = &ob_emlrtRSI;
     if ((1 <= nrows) && (nrows > 2147483646)) {
-      b_st.site = &ab_emlrtRSI;
+      b_st.site = &eb_emlrtRSI;
       check_forloop_overflow_error(&b_st);
     }
 

@@ -2,11 +2,11 @@
 
 b = 2; % wingspan (m)
 chord = @(y) .1*ones(size(y)); % chord as a function of span location (m)
-AoA = 0; % overall wing aoa in degrees
+AoA = -85; % overall wing aoa in degrees
 
 bodyIndex = bodyIndex + 1;
 
-body(bodyIndex).nWingSegments = 21; % number of wing segments,shedding and calculation happens at the divisions
+body(bodyIndex).nWingSegments = 11; % number of wing segments,shedding and calculation happens at the divisions
 body(bodyIndex).nFilamentSegments = 40; % number of filament divisions
 
 body(bodyIndex).targetIndices = 1:body(bodyIndex).nFilamentSegments:(body(bodyIndex).nFilamentSegments*(body(bodyIndex).nWingSegments+1)); % The start index of each filament
@@ -77,10 +77,11 @@ body(bodyIndex).CrossGamma = zeros(1,size(body(bodyIndex).CrossStartPoints,2));
 body(bodyIndex).CrossRc = .01*ones(1,size(body(bodyIndex).CrossStartPoints,2));
 
 % Define Programmed body motion
+omega = 2*pi;
 body(bodyIndex).motion_T = @(t) [0 0 0]'; 
-body(bodyIndex).motion_R = @(t) rotX(2*pi*t/20);
+body(bodyIndex).motion_R = @(t) rotX(omega*t);
 body(bodyIndex).motion_V = @(t) [0 0 0]';
-body(bodyIndex).motion_Om = @(t) [2*pi/20 0 0]';
+body(bodyIndex).motion_Om = @(t) [omega 0 0]';
 
 % Save the relevant original body positions
 body(bodyIndex).FixedStartPoints_0 = body(bodyIndex).FixedStartPoints;

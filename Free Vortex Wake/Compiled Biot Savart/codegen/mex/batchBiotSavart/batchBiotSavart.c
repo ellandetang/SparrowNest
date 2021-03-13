@@ -11,6 +11,7 @@
 
 /* Include files */
 #include "batchBiotSavart.h"
+#include "abs.h"
 #include "batchBiotSavart_emxutil.h"
 #include "batchBiotSavart_types.h"
 #include "cross.h"
@@ -97,37 +98,57 @@ static emlrtRSInfo o_emlrtRSI = { 47,  /* lineNo */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo p_emlrtRSI = { 53,  /* lineNo */
+static emlrtRSInfo p_emlrtRSI = { 48,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo q_emlrtRSI = { 55,  /* lineNo */
+static emlrtRSInfo q_emlrtRSI = { 49,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo r_emlrtRSI = { 56,  /* lineNo */
+static emlrtRSInfo r_emlrtRSI = { 50,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo s_emlrtRSI = { 59,  /* lineNo */
+static emlrtRSInfo s_emlrtRSI = { 51,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo t_emlrtRSI = { 67,  /* lineNo */
+static emlrtRSInfo t_emlrtRSI = { 53,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo u_emlrtRSI = { 69,  /* lineNo */
+static emlrtRSInfo u_emlrtRSI = { 55,  /* lineNo */
   "batchBiotSavart",                   /* fcnName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
 };
 
-static emlrtRSInfo sb_emlrtRSI = { 22, /* lineNo */
+static emlrtRSInfo v_emlrtRSI = { 56,  /* lineNo */
+  "batchBiotSavart",                   /* fcnName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
+};
+
+static emlrtRSInfo w_emlrtRSI = { 59,  /* lineNo */
+  "batchBiotSavart",                   /* fcnName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
+};
+
+static emlrtRSInfo x_emlrtRSI = { 67,  /* lineNo */
+  "batchBiotSavart",                   /* fcnName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
+};
+
+static emlrtRSInfo y_emlrtRSI = { 69,  /* lineNo */
+  "batchBiotSavart",                   /* fcnName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pathName */
+};
+
+static emlrtRSInfo yb_emlrtRSI = { 22, /* lineNo */
   "cat",                               /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\eml\\+coder\\+internal\\cat.m"/* pathName */
 };
@@ -489,151 +510,175 @@ static emlrtRTEInfo db_emlrtRTEI = { 46,/* lineNo */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo eb_emlrtRTEI = { 1,/* lineNo */
+static emlrtRTEInfo eb_emlrtRTEI = { 48,/* lineNo */
+  8,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo fb_emlrtRTEI = { 48,/* lineNo */
+  4,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo gb_emlrtRTEI = { 1,/* lineNo */
   16,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo fb_emlrtRTEI = { 59,/* lineNo */
+static emlrtRTEInfo hb_emlrtRTEI = { 49,/* lineNo */
+  8,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo ib_emlrtRTEI = { 49,/* lineNo */
+  4,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo jb_emlrtRTEI = { 50,/* lineNo */
+  8,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo kb_emlrtRTEI = { 50,/* lineNo */
+  4,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo lb_emlrtRTEI = { 51,/* lineNo */
+  8,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo mb_emlrtRTEI = { 51,/* lineNo */
+  4,                                   /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo nb_emlrtRTEI = { 59,/* lineNo */
   54,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo gb_emlrtRTEI = { 59,/* lineNo */
+static emlrtRTEInfo ob_emlrtRTEI = { 59,/* lineNo */
   19,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo hb_emlrtRTEI = { 59,/* lineNo */
+static emlrtRTEInfo pb_emlrtRTEI = { 59,/* lineNo */
   43,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo ib_emlrtRTEI = { 65,/* lineNo */
+static emlrtRTEInfo qb_emlrtRTEI = { 65,/* lineNo */
   10,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo jb_emlrtRTEI = { 65,/* lineNo */
+static emlrtRTEInfo rb_emlrtRTEI = { 65,/* lineNo */
   19,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo kb_emlrtRTEI = { 65,/* lineNo */
+static emlrtRTEInfo sb_emlrtRTEI = { 65,/* lineNo */
   32,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo lb_emlrtRTEI = { 67,/* lineNo */
+static emlrtRTEInfo tb_emlrtRTEI = { 65,/* lineNo */
+  45,                                  /* colNo */
+  "batchBiotSavart",                   /* fName */
+  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
+};
+
+static emlrtRTEInfo ub_emlrtRTEI = { 67,/* lineNo */
   14,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo mb_emlrtRTEI = { 69,/* lineNo */
+static emlrtRTEInfo vb_emlrtRTEI = { 69,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo nb_emlrtRTEI = { 14,/* lineNo */
+static emlrtRTEInfo wb_emlrtRTEI = { 14,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo ob_emlrtRTEI = { 24,/* lineNo */
+static emlrtRTEInfo xb_emlrtRTEI = { 24,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo pb_emlrtRTEI = { 35,/* lineNo */
+static emlrtRTEInfo yb_emlrtRTEI = { 35,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo qb_emlrtRTEI = { 42,/* lineNo */
+static emlrtRTEInfo ac_emlrtRTEI = { 42,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo rb_emlrtRTEI = { 46,/* lineNo */
+static emlrtRTEInfo bc_emlrtRTEI = { 46,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo sb_emlrtRTEI = { 47,/* lineNo */
+static emlrtRTEInfo cc_emlrtRTEI = { 47,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo tb_emlrtRTEI = { 53,/* lineNo */
+static emlrtRTEInfo dc_emlrtRTEI = { 53,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo ub_emlrtRTEI = { 59,/* lineNo */
+static emlrtRTEInfo ec_emlrtRTEI = { 59,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo vb_emlrtRTEI = { 67,/* lineNo */
+static emlrtRTEInfo fc_emlrtRTEI = { 67,/* lineNo */
   1,                                   /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo wb_emlrtRTEI = { 59,/* lineNo */
-  47,                                  /* colNo */
-  "batchBiotSavart",                   /* fName */
-  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
-};
-
-static emlrtRTEInfo xb_emlrtRTEI = { 48,/* lineNo */
-  4,                                   /* colNo */
-  "batchBiotSavart",                   /* fName */
-  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
-};
-
-static emlrtRTEInfo yb_emlrtRTEI = { 49,/* lineNo */
-  4,                                   /* colNo */
-  "batchBiotSavart",                   /* fName */
-  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
-};
-
-static emlrtRTEInfo ac_emlrtRTEI = { 50,/* lineNo */
-  4,                                   /* colNo */
-  "batchBiotSavart",                   /* fName */
-  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
-};
-
-static emlrtRTEInfo bc_emlrtRTEI = { 51,/* lineNo */
-  4,                                   /* colNo */
-  "batchBiotSavart",                   /* fName */
-  "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
-};
-
-static emlrtRTEInfo cc_emlrtRTEI = { 14,/* lineNo */
+static emlrtRTEInfo gc_emlrtRTEI = { 14,/* lineNo */
   17,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
 };
 
-static emlrtRTEInfo dc_emlrtRTEI = { 35,/* lineNo */
+static emlrtRTEInfo hc_emlrtRTEI = { 35,/* lineNo */
   18,                                  /* colNo */
   "batchBiotSavart",                   /* fName */
   "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\batchBiotSavart.m"/* pName */
@@ -647,12 +692,12 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
 {
   emlrtStack b_st;
   emlrtStack st;
-  emxArray_boolean_T *r7;
+  emxArray_boolean_T *r3;
   emxArray_boolean_T *r8;
-  emxArray_int32_T *r3;
   emxArray_int32_T *r4;
   emxArray_int32_T *r5;
   emxArray_int32_T *r6;
+  emxArray_int32_T *r7;
   emxArray_int32_T *r9;
   emxArray_real_T *AvMatrix;
   emxArray_real_T *V_temp;
@@ -703,9 +748,9 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     l->data[i] = endPoints->data[i] - startPoints->data[i];
   }
 
-  emxInit_real_T(sp, &lmag, 2, &nb_emlrtRTEI, true);
+  emxInit_real_T(sp, &lmag, 2, &wb_emlrtRTEI, true);
   emxInit_real_T(sp, &l12, 3, &j_emlrtRTEI, true);
-  emxInit_real_T(sp, &r, 2, &cc_emlrtRTEI, true);
+  emxInit_real_T(sp, &r, 2, &gc_emlrtRTEI, true);
   st.site = &emlrtRSI;
   power(&st, l, r);
   st.site = &emlrtRSI;
@@ -735,7 +780,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     b_l->data[i] = l->data[3 * i];
   }
 
-  emxInit_real_T(sp, &r1, 2, &wb_emlrtRTEI, true);
+  emxInit_real_T(sp, &r1, 2, &fb_emlrtRTEI, true);
   b_startPoints[0] = 1.0;
   b_startPoints[1] = samplePoints->size[1];
   st.site = &b_emlrtRSI;
@@ -812,7 +857,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     b_l->data[i] = lmag->data[i];
   }
 
-  emxInit_real_T(sp, &l12mag, 2, &ob_emlrtRTEI, true);
+  emxInit_real_T(sp, &l12mag, 2, &xb_emlrtRTEI, true);
   emxInit_real_T(sp, &b_r1, 3, &o_emlrtRTEI, true);
   b_startPoints[0] = 1.0;
   b_startPoints[1] = samplePoints->size[1];
@@ -849,7 +894,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     b_l->data[i] = startPoints->data[3 * i];
   }
 
-  emxInit_real_T(sp, &h, 2, &tb_emlrtRTEI, true);
+  emxInit_real_T(sp, &h, 2, &dc_emlrtRTEI, true);
   b_startPoints[0] = 1.0;
   b_startPoints[1] = samplePoints->size[1];
   st.site = &f_emlrtRSI;
@@ -951,9 +996,9 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     }
   }
 
-  emxInit_real_T(sp, &r1mag, 2, &pb_emlrtRTEI, true);
+  emxInit_real_T(sp, &r1mag, 2, &yb_emlrtRTEI, true);
   emxInit_real_T(sp, &r2, 3, &v_emlrtRTEI, true);
-  emxInit_real_T(sp, &b_r2, 3, &dc_emlrtRTEI, true);
+  emxInit_real_T(sp, &b_r2, 3, &hc_emlrtRTEI, true);
   st.site = &i_emlrtRSI;
   b_power(&st, b_r1, b_r2);
   st.site = &i_emlrtRSI;
@@ -1093,8 +1138,8 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     }
   }
 
-  emxInit_real_T(sp, &r2mag, 2, &qb_emlrtRTEI, true);
-  emxInit_real_T(sp, &c1, 2, &rb_emlrtRTEI, true);
+  emxInit_real_T(sp, &r2mag, 2, &ac_emlrtRTEI, true);
+  emxInit_real_T(sp, &c1, 2, &bc_emlrtRTEI, true);
   emxInit_real_T(sp, &y, 2, &db_emlrtRTEI, true);
   st.site = &m_emlrtRSI;
   b_power(&st, r2, b_r2);
@@ -1129,7 +1174,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     c1->data[i] /= y->data[i];
   }
 
-  emxInit_real_T(&st, &c2, 2, &sb_emlrtRTEI, true);
+  emxInit_real_T(&st, &c2, 2, &cc_emlrtRTEI, true);
   emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])l12mag->size, *(int32_T (*)[2])
     r2mag->size, &r_emlrtECI, sp);
   st.site = &o_emlrtRSI;
@@ -1150,52 +1195,42 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     c2->data[i] /= l12mag->data[i];
   }
 
-  b_loop_ub = c1->size[0] * c1->size[1] - 1;
+  i = l12mag->size[0] * l12mag->size[1];
+  l12mag->size[0] = c1->size[0];
+  l12mag->size[1] = c1->size[1];
+  emxEnsureCapacity_real_T(sp, l12mag, i, &eb_emlrtRTEI);
+  loop_ub = c1->size[0] * c1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    l12mag->data[i] = c1->data[i] - 1.0;
+  }
+
+  emxInit_boolean_T(sp, &r3, 2, &fb_emlrtRTEI, true);
+  st.site = &p_emlrtRSI;
+  b_abs(&st, l12mag, r1);
+  i = r3->size[0] * r3->size[1];
+  r3->size[0] = r1->size[0];
+  r3->size[1] = r1->size[1];
+  emxEnsureCapacity_boolean_T(sp, r3, i, &fb_emlrtRTEI);
+  loop_ub = r1->size[0] * r1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r3->data[i] = (r1->data[i] < 0.0001);
+  }
+
+  b_loop_ub = r3->size[0] * r3->size[1] - 1;
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c1->data[loop_ub] > 1.0) {
+    if (r3->data[loop_ub]) {
       trueCount++;
     }
   }
 
-  emxInit_int32_T(sp, &r3, 1, &xb_emlrtRTEI, true);
-  i = r3->size[0];
-  r3->size[0] = trueCount;
-  emxEnsureCapacity_int32_T(sp, r3, i, &eb_emlrtRTEI);
-  trueCount = 0;
-  for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c1->data[loop_ub] > 1.0) {
-      r3->data[trueCount] = loop_ub + 1;
-      trueCount++;
-    }
-  }
-
-  loop_ub = r3->size[0] - 1;
-  trueCount = c1->size[0] * c1->size[1];
-  for (i = 0; i <= loop_ub; i++) {
-    if ((r3->data[i] < 1) || (r3->data[i] > trueCount)) {
-      emlrtDynamicBoundsCheckR2012b(r3->data[i], 1, trueCount, &emlrtBCI, sp);
-    }
-
-    c1->data[r3->data[i] - 1] = 1.0;
-  }
-
-  emxFree_int32_T(&r3);
-  b_loop_ub = c1->size[0] * c1->size[1] - 1;
-  trueCount = 0;
-  for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c1->data[loop_ub] < -1.0) {
-      trueCount++;
-    }
-  }
-
-  emxInit_int32_T(sp, &r4, 1, &yb_emlrtRTEI, true);
+  emxInit_int32_T(sp, &r4, 1, &gb_emlrtRTEI, true);
   i = r4->size[0];
   r4->size[0] = trueCount;
-  emxEnsureCapacity_int32_T(sp, r4, i, &eb_emlrtRTEI);
+  emxEnsureCapacity_int32_T(sp, r4, i, &gb_emlrtRTEI);
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c1->data[loop_ub] < -1.0) {
+    if (r3->data[loop_ub]) {
       r4->data[trueCount] = loop_ub + 1;
       trueCount++;
     }
@@ -1205,59 +1240,99 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   trueCount = c1->size[0] * c1->size[1];
   for (i = 0; i <= loop_ub; i++) {
     if ((r4->data[i] < 1) || (r4->data[i] > trueCount)) {
-      emlrtDynamicBoundsCheckR2012b(r4->data[i], 1, trueCount, &b_emlrtBCI, sp);
+      emlrtDynamicBoundsCheckR2012b(r4->data[i], 1, trueCount, &emlrtBCI, sp);
     }
 
-    c1->data[r4->data[i] - 1] = -1.0;
+    c1->data[r4->data[i] - 1] = 1.0;
   }
 
   emxFree_int32_T(&r4);
-  b_loop_ub = c2->size[0] * c2->size[1] - 1;
+  i = l12mag->size[0] * l12mag->size[1];
+  l12mag->size[0] = c1->size[0];
+  l12mag->size[1] = c1->size[1];
+  emxEnsureCapacity_real_T(sp, l12mag, i, &hb_emlrtRTEI);
+  loop_ub = c1->size[0] * c1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    l12mag->data[i] = c1->data[i] + 1.0;
+  }
+
+  st.site = &q_emlrtRSI;
+  b_abs(&st, l12mag, r1);
+  i = r3->size[0] * r3->size[1];
+  r3->size[0] = r1->size[0];
+  r3->size[1] = r1->size[1];
+  emxEnsureCapacity_boolean_T(sp, r3, i, &ib_emlrtRTEI);
+  loop_ub = r1->size[0] * r1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r3->data[i] = (r1->data[i] < 0.0001);
+  }
+
+  b_loop_ub = r3->size[0] * r3->size[1] - 1;
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c2->data[loop_ub] > 1.0) {
+    if (r3->data[loop_ub]) {
       trueCount++;
     }
   }
 
-  emxInit_int32_T(sp, &r5, 1, &ac_emlrtRTEI, true);
+  emxInit_int32_T(sp, &r5, 1, &gb_emlrtRTEI, true);
   i = r5->size[0];
   r5->size[0] = trueCount;
-  emxEnsureCapacity_int32_T(sp, r5, i, &eb_emlrtRTEI);
+  emxEnsureCapacity_int32_T(sp, r5, i, &gb_emlrtRTEI);
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c2->data[loop_ub] > 1.0) {
+    if (r3->data[loop_ub]) {
       r5->data[trueCount] = loop_ub + 1;
       trueCount++;
     }
   }
 
   loop_ub = r5->size[0] - 1;
-  trueCount = c2->size[0] * c2->size[1];
+  trueCount = c1->size[0] * c1->size[1];
   for (i = 0; i <= loop_ub; i++) {
     if ((r5->data[i] < 1) || (r5->data[i] > trueCount)) {
-      emlrtDynamicBoundsCheckR2012b(r5->data[i], 1, trueCount, &c_emlrtBCI, sp);
+      emlrtDynamicBoundsCheckR2012b(r5->data[i], 1, trueCount, &b_emlrtBCI, sp);
     }
 
-    c2->data[r5->data[i] - 1] = 1.0;
+    c1->data[r5->data[i] - 1] = -1.0;
   }
 
   emxFree_int32_T(&r5);
-  b_loop_ub = c2->size[0] * c2->size[1] - 1;
+  i = l12mag->size[0] * l12mag->size[1];
+  l12mag->size[0] = c2->size[0];
+  l12mag->size[1] = c2->size[1];
+  emxEnsureCapacity_real_T(sp, l12mag, i, &jb_emlrtRTEI);
+  loop_ub = c2->size[0] * c2->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    l12mag->data[i] = c2->data[i] - 1.0;
+  }
+
+  st.site = &r_emlrtRSI;
+  b_abs(&st, l12mag, r1);
+  i = r3->size[0] * r3->size[1];
+  r3->size[0] = r1->size[0];
+  r3->size[1] = r1->size[1];
+  emxEnsureCapacity_boolean_T(sp, r3, i, &kb_emlrtRTEI);
+  loop_ub = r1->size[0] * r1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r3->data[i] = (r1->data[i] < 0.0001);
+  }
+
+  b_loop_ub = r3->size[0] * r3->size[1] - 1;
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c2->data[loop_ub] < -1.0) {
+    if (r3->data[loop_ub]) {
       trueCount++;
     }
   }
 
-  emxInit_int32_T(sp, &r6, 1, &bc_emlrtRTEI, true);
+  emxInit_int32_T(sp, &r6, 1, &gb_emlrtRTEI, true);
   i = r6->size[0];
   r6->size[0] = trueCount;
-  emxEnsureCapacity_int32_T(sp, r6, i, &eb_emlrtRTEI);
+  emxEnsureCapacity_int32_T(sp, r6, i, &gb_emlrtRTEI);
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (c2->data[loop_ub] < -1.0) {
+    if (r3->data[loop_ub]) {
       r6->data[trueCount] = loop_ub + 1;
       trueCount++;
     }
@@ -1267,20 +1342,71 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   trueCount = c2->size[0] * c2->size[1];
   for (i = 0; i <= loop_ub; i++) {
     if ((r6->data[i] < 1) || (r6->data[i] > trueCount)) {
-      emlrtDynamicBoundsCheckR2012b(r6->data[i], 1, trueCount, &d_emlrtBCI, sp);
+      emlrtDynamicBoundsCheckR2012b(r6->data[i], 1, trueCount, &c_emlrtBCI, sp);
     }
 
-    c2->data[r6->data[i] - 1] = -1.0;
+    c2->data[r6->data[i] - 1] = 1.0;
   }
 
   emxFree_int32_T(&r6);
-  st.site = &p_emlrtRSI;
+  i = l12mag->size[0] * l12mag->size[1];
+  l12mag->size[0] = c2->size[0];
+  l12mag->size[1] = c2->size[1];
+  emxEnsureCapacity_real_T(sp, l12mag, i, &lb_emlrtRTEI);
+  loop_ub = c2->size[0] * c2->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    l12mag->data[i] = c2->data[i] + 1.0;
+  }
+
+  st.site = &s_emlrtRSI;
+  b_abs(&st, l12mag, r1);
+  i = r3->size[0] * r3->size[1];
+  r3->size[0] = r1->size[0];
+  r3->size[1] = r1->size[1];
+  emxEnsureCapacity_boolean_T(sp, r3, i, &mb_emlrtRTEI);
+  loop_ub = r1->size[0] * r1->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r3->data[i] = (r1->data[i] < 0.0001);
+  }
+
+  b_loop_ub = r3->size[0] * r3->size[1] - 1;
+  trueCount = 0;
+  for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
+    if (r3->data[loop_ub]) {
+      trueCount++;
+    }
+  }
+
+  emxInit_int32_T(sp, &r7, 1, &gb_emlrtRTEI, true);
+  i = r7->size[0];
+  r7->size[0] = trueCount;
+  emxEnsureCapacity_int32_T(sp, r7, i, &gb_emlrtRTEI);
+  trueCount = 0;
+  for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
+    if (r3->data[loop_ub]) {
+      r7->data[trueCount] = loop_ub + 1;
+      trueCount++;
+    }
+  }
+
+  loop_ub = r7->size[0] - 1;
+  trueCount = c2->size[0] * c2->size[1];
+  for (i = 0; i <= loop_ub; i++) {
+    if ((r7->data[i] < 1) || (r7->data[i] > trueCount)) {
+      emlrtDynamicBoundsCheckR2012b(r7->data[i], 1, trueCount, &d_emlrtBCI, sp);
+    }
+
+    c2->data[r7->data[i] - 1] = -1.0;
+  }
+
+  emxFree_int32_T(&r7);
+  st.site = &t_emlrtRSI;
   c_power(&st, c1, r1);
   c_startPoints[0] = startPoints->size[1];
   c_startPoints[1] = samplePoints->size[1];
   emlrtSizeEqCheckNDR2012b(c_startPoints, *(int32_T (*)[2])r1->size, &s_emlrtECI,
     sp);
-  st.site = &p_emlrtRSI;
+  st.site = &t_emlrtRSI;
   c_power(&st, r1mag, h);
   c_startPoints[0] = startPoints->size[1];
   c_startPoints[1] = samplePoints->size[1];
@@ -1291,21 +1417,21 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     h->data[i] *= 1.0 - r1->data[i];
   }
 
-  st.site = &p_emlrtRSI;
+  st.site = &t_emlrtRSI;
   c_sqrt(&st, h);
-  st.site = &q_emlrtRSI;
+  st.site = &u_emlrtRSI;
   cross(&st, l12, b_r1, r2);
-  st.site = &r_emlrtRSI;
+  st.site = &v_emlrtRSI;
   b_power(&st, r2, b_r2);
-  st.site = &r_emlrtRSI;
+  st.site = &v_emlrtRSI;
   b_sum(&st, b_r2, l12mag);
-  st.site = &r_emlrtRSI;
+  st.site = &v_emlrtRSI;
   c_sqrt(&st, l12mag);
 
   /*  try */
   i = b_l->size[0];
   b_l->size[0] = rc->size[1];
-  emxEnsureCapacity_real_T(sp, b_l, i, &fb_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, b_l, i, &nb_emlrtRTEI);
   loop_ub = rc->size[1];
   emxFree_real_T(&b_r1);
   for (i = 0; i < loop_ub; i++) {
@@ -1314,26 +1440,26 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
 
   b_startPoints[0] = 1.0;
   b_startPoints[1] = samplePoints->size[1];
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   repmat(&st, b_l, b_startPoints, r1);
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   c_power(&st, r1, y);
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   c_power(&st, h, r1);
   emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])y->size, *(int32_T (*)[2])r1->size,
     &u_emlrtECI, sp);
   i = b_l->size[0];
   b_l->size[0] = Gamma->size[1];
-  emxEnsureCapacity_real_T(sp, b_l, i, &gb_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, b_l, i, &ob_emlrtRTEI);
   loop_ub = Gamma->size[1];
   for (i = 0; i < loop_ub; i++) {
     b_l->data[i] = Gamma->data[i];
   }
 
-  emxInit_real_T(sp, &AvMatrix, 2, &ub_emlrtRTEI, true);
+  emxInit_real_T(sp, &AvMatrix, 2, &ec_emlrtRTEI, true);
   b_startPoints[0] = 1.0;
   b_startPoints[1] = samplePoints->size[1];
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   repmat(&st, b_l, b_startPoints, AvMatrix);
   loop_ub = AvMatrix->size[0] * AvMatrix->size[1];
   emxFree_real_T(&b_l);
@@ -1341,7 +1467,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     AvMatrix->data[i] /= 12.566370614359172;
   }
 
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   loop_ub = y->size[0] * y->size[1];
   for (i = 0; i < loop_ub; i++) {
     y->data[i] += r1->data[i];
@@ -1357,7 +1483,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   i = y->size[0] * y->size[1];
   y->size[0] = h->size[0];
   y->size[1] = h->size[1];
-  emxEnsureCapacity_real_T(&st, y, i, &hb_emlrtRTEI);
+  emxEnsureCapacity_real_T(&st, y, i, &pb_emlrtRTEI);
   for (i = 0; i < loop_ub; i++) {
     y->data[i] = h->data[i] / y->data[i];
   }
@@ -1374,7 +1500,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   emxFree_real_T(&y);
   emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])AvMatrix->size, *(int32_T (*)[2])
     c1->size, &v_emlrtECI, sp);
-  st.site = &s_emlrtRSI;
+  st.site = &w_emlrtRSI;
   loop_ub = AvMatrix->size[0] * AvMatrix->size[1];
   for (i = 0; i < loop_ub; i++) {
     AvMatrix->data[i] *= c1->data[i] - c2->data[i];
@@ -1393,75 +1519,89 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
     AvMatrix->data[i] /= l12mag->data[i];
   }
 
-  emxFree_real_T(&l12mag);
-  emxInit_boolean_T(&st, &r7, 2, &eb_emlrtRTEI, true);
-
   /*  catch */
   /*      keyboard */
   /*  end */
   /*  Sanitize for samplepoints close to filaments */
-  i = r7->size[0] * r7->size[1];
-  r7->size[0] = h->size[0];
-  r7->size[1] = h->size[1];
-  emxEnsureCapacity_boolean_T(sp, r7, i, &ib_emlrtRTEI);
+  i = r3->size[0] * r3->size[1];
+  r3->size[0] = h->size[0];
+  r3->size[1] = h->size[1];
+  emxEnsureCapacity_boolean_T(sp, r3, i, &qb_emlrtRTEI);
   loop_ub = h->size[0] * h->size[1];
   for (i = 0; i < loop_ub; i++) {
-    r7->data[i] = (h->data[i] == 0.0);
+    r3->data[i] = (h->data[i] == 0.0);
   }
 
   emxFree_real_T(&h);
-  emxInit_boolean_T(sp, &r8, 2, &eb_emlrtRTEI, true);
+  emxInit_boolean_T(sp, &r8, 2, &gb_emlrtRTEI, true);
   i = r8->size[0] * r8->size[1];
   r8->size[0] = r1mag->size[0];
   r8->size[1] = r1mag->size[1];
-  emxEnsureCapacity_boolean_T(sp, r8, i, &jb_emlrtRTEI);
+  emxEnsureCapacity_boolean_T(sp, r8, i, &rb_emlrtRTEI);
   loop_ub = r1mag->size[0] * r1mag->size[1];
   for (i = 0; i < loop_ub; i++) {
     r8->data[i] = (r1mag->data[i] == 0.0);
   }
 
   emxFree_real_T(&r1mag);
-  emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])r7->size, *(int32_T (*)[2])r8->size,
+  emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])r3->size, *(int32_T (*)[2])r8->size,
     &x_emlrtECI, sp);
-  loop_ub = r7->size[0] * r7->size[1];
+  loop_ub = r3->size[0] * r3->size[1];
   for (i = 0; i < loop_ub; i++) {
-    r7->data[i] = (r7->data[i] || r8->data[i]);
+    r3->data[i] = (r3->data[i] || r8->data[i]);
   }
 
   i = r8->size[0] * r8->size[1];
   r8->size[0] = r2mag->size[0];
   r8->size[1] = r2mag->size[1];
-  emxEnsureCapacity_boolean_T(sp, r8, i, &kb_emlrtRTEI);
+  emxEnsureCapacity_boolean_T(sp, r8, i, &sb_emlrtRTEI);
   loop_ub = r2mag->size[0] * r2mag->size[1];
   for (i = 0; i < loop_ub; i++) {
     r8->data[i] = (r2mag->data[i] == 0.0);
   }
 
   emxFree_real_T(&r2mag);
-  emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])r7->size, *(int32_T (*)[2])r8->size,
+  emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])r3->size, *(int32_T (*)[2])r8->size,
     &x_emlrtECI, sp);
-  b_loop_ub = r7->size[0] * r7->size[1] - 1;
+  loop_ub = r3->size[0] * r3->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r3->data[i] = (r3->data[i] || r8->data[i]);
+  }
+
+  i = r8->size[0] * r8->size[1];
+  r8->size[0] = l12mag->size[0];
+  r8->size[1] = l12mag->size[1];
+  emxEnsureCapacity_boolean_T(sp, r8, i, &tb_emlrtRTEI);
+  loop_ub = l12mag->size[0] * l12mag->size[1];
+  for (i = 0; i < loop_ub; i++) {
+    r8->data[i] = (l12mag->data[i] == 0.0);
+  }
+
+  emxFree_real_T(&l12mag);
+  emlrtSizeEqCheckNDR2012b(*(int32_T (*)[2])r3->size, *(int32_T (*)[2])r8->size,
+    &x_emlrtECI, sp);
+  b_loop_ub = r3->size[0] * r3->size[1] - 1;
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (r7->data[loop_ub] || r8->data[loop_ub]) {
+    if (r3->data[loop_ub] || r8->data[loop_ub]) {
       trueCount++;
     }
   }
 
-  emxInit_int32_T(sp, &r9, 1, &ib_emlrtRTEI, true);
+  emxInit_int32_T(sp, &r9, 1, &qb_emlrtRTEI, true);
   i = r9->size[0];
   r9->size[0] = trueCount;
-  emxEnsureCapacity_int32_T(sp, r9, i, &eb_emlrtRTEI);
+  emxEnsureCapacity_int32_T(sp, r9, i, &gb_emlrtRTEI);
   trueCount = 0;
   for (loop_ub = 0; loop_ub <= b_loop_ub; loop_ub++) {
-    if (r7->data[loop_ub] || r8->data[loop_ub]) {
+    if (r3->data[loop_ub] || r8->data[loop_ub]) {
       r9->data[trueCount] = loop_ub + 1;
       trueCount++;
     }
   }
 
+  emxFree_boolean_T(&r3);
   emxFree_boolean_T(&r8);
-  emxFree_boolean_T(&r7);
   loop_ub = r9->size[0] - 1;
   trueCount = AvMatrix->size[0] * AvMatrix->size[1];
   for (i = 0; i <= loop_ub; i++) {
@@ -1473,7 +1613,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   }
 
   emxFree_int32_T(&r9);
-  st.site = &t_emlrtRSI;
+  st.site = &x_emlrtRSI;
   c_repmat(&st, AvMatrix, b_r2);
   emlrtSizeEqCheckNDR2012b(*(int32_T (*)[3])r2->size, *(int32_T (*)[3])
     b_r2->size, &y_emlrtECI, sp);
@@ -1481,7 +1621,7 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
   l12->size[0] = r2->size[0];
   l12->size[1] = r2->size[1];
   l12->size[2] = 3;
-  emxEnsureCapacity_real_T(sp, l12, i, &lb_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, l12, i, &ub_emlrtRTEI);
   loop_ub = r2->size[0] * r2->size[1] * r2->size[2];
   emxFree_real_T(&AvMatrix);
   for (i = 0; i < loop_ub; i++) {
@@ -1490,18 +1630,18 @@ void batchBiotSavart(const emlrtStack *sp, const emxArray_real_T *startPoints,
 
   emxFree_real_T(&b_r2);
   emxFree_real_T(&r2);
-  emxInit_real_T(sp, &V_temp, 3, &vb_emlrtRTEI, true);
-  st.site = &t_emlrtRSI;
+  emxInit_real_T(sp, &V_temp, 3, &fc_emlrtRTEI, true);
+  st.site = &x_emlrtRSI;
   c_sum(&st, l12, V_temp);
-  st.site = &u_emlrtRSI;
-  b_st.site = &sb_emlrtRSI;
+  st.site = &y_emlrtRSI;
+  b_st.site = &yb_emlrtRSI;
   loop_ub = V_temp->size[1];
   b_loop_ub = V_temp->size[1];
   trueCount = V_temp->size[1];
   i = V->size[0] * V->size[1];
   V->size[0] = 3;
   V->size[1] = V_temp->size[1];
-  emxEnsureCapacity_real_T(&b_st, V, i, &mb_emlrtRTEI);
+  emxEnsureCapacity_real_T(&b_st, V, i, &vb_emlrtRTEI);
   emxFree_real_T(&l12);
   for (i = 0; i < loop_ub; i++) {
     V->data[3 * i] = V_temp->data[i];

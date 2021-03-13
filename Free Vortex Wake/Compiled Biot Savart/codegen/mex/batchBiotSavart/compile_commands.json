@@ -67,6 +67,12 @@
   },
   {
     "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
+    "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   abs.c -Fobuild\\win64\\abs.obj",
+    "file": "abs.c",
+    "output": "build/win64/abs.obj"
+  },
+  {
+    "directory": "E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\\codegen\\mex\\batchBiotSavart",
     "command": "lcc64 -nodeclspec -Zp8 -dll -c -I\"F:\\Program Files\\MATLAB\\R2020b\\sys\\lcc64\\lcc64\\include64\" -DMATLAB_MEX_FILE -noregistrylookup -DNDEBUG -I\".\" -I\"E:\\Desktop\\Git\\SparrowNest\\Free Vortex Wake\\Compiled Biot Savart\" -I\".\\interface\" -I\"F:\\Program Files\\MATLAB\\R2020b\\extern\\include\" -I\".\" -DMODEL=batchBiotSavart_mex   cross.c -Fobuild\\win64\\cross.obj",
     "file": "cross.c",
     "output": "build/win64/cross.obj"

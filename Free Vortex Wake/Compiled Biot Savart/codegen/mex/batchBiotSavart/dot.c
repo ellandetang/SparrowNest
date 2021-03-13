@@ -18,7 +18,7 @@
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
-static emlrtRSInfo ob_emlrtRSI = { 70, /* lineNo */
+static emlrtRSInfo sb_emlrtRSI = { 70, /* lineNo */
   "dot",                               /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\dot.m"/* pathName */
 };
@@ -29,7 +29,7 @@ static emlrtRTEInfo e_emlrtRTEI = { 12,/* lineNo */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\dot.m"/* pName */
 };
 
-static emlrtRTEInfo ic_emlrtRTEI = { 60,/* lineNo */
+static emlrtRTEInfo mc_emlrtRTEI = { 60,/* lineNo */
   20,                                  /* colNo */
   "dot",                               /* fName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\dot.m"/* pName */
@@ -83,13 +83,13 @@ void dot(const emlrtStack *sp, const emxArray_real_T *a, const emxArray_real_T
   vstride = c->size[0] * c->size[1];
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
-  emxEnsureCapacity_real_T(sp, c, vstride, &ic_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, c, vstride, &mc_emlrtRTEI);
   vstride = a->size[0] * a->size[1];
   ic = -1;
   i1 = -1;
-  st.site = &ob_emlrtRSI;
+  st.site = &sb_emlrtRSI;
   if ((1 <= vstride) && (vstride > 2147483646)) {
-    b_st.site = &ab_emlrtRSI;
+    b_st.site = &eb_emlrtRSI;
     check_forloop_overflow_error(&b_st);
   }
 

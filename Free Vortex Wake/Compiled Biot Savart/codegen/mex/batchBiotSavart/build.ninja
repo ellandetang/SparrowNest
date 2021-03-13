@@ -45,6 +45,7 @@ build $builddir\sum.obj : cc $root\sum.c
 build $builddir\repmat.obj : cc $root\repmat.c
 build $builddir\assertValidSizeArg.obj : cc $root\assertValidSizeArg.c
 build $builddir\dot.obj : cc $root\dot.c
+build $builddir\abs.obj : cc $root\abs.c
 build $builddir\cross.obj : cc $root\cross.c
 build $builddir\_coder_batchBiotSavart_api.obj : cc $root\interface\_coder_batchBiotSavart_api.c
 build $builddir\_coder_batchBiotSavart_mex.obj : cc $root\interface\_coder_batchBiotSavart_mex.c
@@ -55,4 +56,4 @@ build $builddir\c_mexapi_version.obj : cc $matlabdir\extern\version\c_mexapi_ver
 build $builddir\lccstub.obj : cc $matlabdir\sys\lcc64\lcc64\mex\lccstub.c
 
 # Link
-build $root\batchBiotSavart_mex.mexw64 : link $builddir\batchBiotSavart_data.obj $builddir\rt_nonfinite.obj $builddir\batchBiotSavart_initialize.obj $builddir\batchBiotSavart_terminate.obj $builddir\batchBiotSavart.obj $builddir\power.obj $builddir\eml_int_forloop_overflow_check.obj $builddir\sum.obj $builddir\repmat.obj $builddir\assertValidSizeArg.obj $builddir\dot.obj $builddir\cross.obj $builddir\_coder_batchBiotSavart_api.obj $builddir\_coder_batchBiotSavart_mex.obj $builddir\sqrt.obj $builddir\batchBiotSavart_emxutil.obj $builddir\_coder_batchBiotSavart_info.obj $builddir\c_mexapi_version.obj $builddir\lccstub.obj 
+build $root\batchBiotSavart_mex.mexw64 : link $builddir\batchBiotSavart_data.obj $builddir\rt_nonfinite.obj $builddir\batchBiotSavart_initialize.obj $builddir\batchBiotSavart_terminate.obj $builddir\batchBiotSavart.obj $builddir\power.obj $builddir\eml_int_forloop_overflow_check.obj $builddir\sum.obj $builddir\repmat.obj $builddir\assertValidSizeArg.obj $builddir\dot.obj $builddir\abs.obj $builddir\cross.obj $builddir\_coder_batchBiotSavart_api.obj $builddir\_coder_batchBiotSavart_mex.obj $builddir\sqrt.obj $builddir\batchBiotSavart_emxutil.obj $builddir\_coder_batchBiotSavart_info.obj $builddir\c_mexapi_version.obj $builddir\lccstub.obj 

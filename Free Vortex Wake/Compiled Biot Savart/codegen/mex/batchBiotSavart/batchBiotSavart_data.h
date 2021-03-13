@@ -23,6 +23,6 @@
 /* Variable Declarations */
 extern emlrtCTX emlrtRootTLSGlobal;
 extern emlrtContext emlrtContextGlobal;
-extern emlrtRSInfo ab_emlrtRSI;
+extern emlrtRSInfo eb_emlrtRSI;
 
 /* End of code generation (batchBiotSavart_data.h) */

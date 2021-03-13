@@ -18,7 +18,7 @@
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
-static emlrtRTEInfo kc_emlrtRTEI = { 1,/* lineNo */
+static emlrtRTEInfo pc_emlrtRTEI = { 1,/* lineNo */
   1,                                   /* colNo */
   "_coder_batchBiotSavart_api",        /* fName */
   ""                                   /* pName */
@@ -147,12 +147,12 @@ void batchBiotSavart_api(const mxArray * const prhs[5], const mxArray *plhs[1])
   emxArray_real_T *startPoints;
   st.tls = emlrtRootTLSGlobal;
   emlrtHeapReferenceStackEnterFcnR2012b(&st);
-  emxInit_real_T(&st, &startPoints, 2, &kc_emlrtRTEI, true);
-  emxInit_real_T(&st, &endPoints, 2, &kc_emlrtRTEI, true);
-  emxInit_real_T(&st, &Gamma, 2, &kc_emlrtRTEI, true);
-  emxInit_real_T(&st, &rc, 2, &kc_emlrtRTEI, true);
-  emxInit_real_T(&st, &samplePoints, 2, &kc_emlrtRTEI, true);
-  emxInit_real_T(&st, &V, 2, &kc_emlrtRTEI, true);
+  emxInit_real_T(&st, &startPoints, 2, &pc_emlrtRTEI, true);
+  emxInit_real_T(&st, &endPoints, 2, &pc_emlrtRTEI, true);
+  emxInit_real_T(&st, &Gamma, 2, &pc_emlrtRTEI, true);
+  emxInit_real_T(&st, &rc, 2, &pc_emlrtRTEI, true);
+  emxInit_real_T(&st, &samplePoints, 2, &pc_emlrtRTEI, true);
+  emxInit_real_T(&st, &V, 2, &pc_emlrtRTEI, true);
 
   /* Marshall function inputs */
   startPoints->canFreeData = false;

@@ -26,7 +26,7 @@ rho = 1.225; % air density kg/m^3
 % Define Environment
 simulation.U = [-1,0,0]'; % Free stream velocity vector, m/s
 simulation.Umag = norm(simulation.U); % Forward flight speed m/s
-simulation.dt = .2; % Time step time (s)
+simulation.dt = .05; % Time step time (s)
 simulation.nT = 100; % Number of time steps
 simulation.TF = simulation.dt*simulation.nT;
 
@@ -68,7 +68,7 @@ for ind2 = 1:simulation.nT
     
     clf
     plotResults(body)
-%     keyboard
+    %keyboard
     fprintf('Step %i of %i \n',ind2,simulation.nT)
 end
 

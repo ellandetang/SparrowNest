@@ -18,12 +18,12 @@
 #include "mwmathutil.h"
 
 /* Variable Definitions */
-static emlrtRSInfo fb_emlrtRSI = { 16, /* lineNo */
+static emlrtRSInfo jb_emlrtRSI = { 16, /* lineNo */
   "sqrt",                              /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\elfun\\sqrt.m"/* pathName */
 };
 
-static emlrtRSInfo gb_emlrtRSI = { 33, /* lineNo */
+static emlrtRSInfo kb_emlrtRSI = { 33, /* lineNo */
   "applyScalarFunctionInPlace",        /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\eml\\+coder\\+internal\\applyScalarFunctionInPlace.m"/* pathName */
 };
@@ -63,11 +63,11 @@ void b_sqrt(const emlrtStack *sp, emxArray_real_T *x)
       4, "sqrt");
   }
 
-  st.site = &fb_emlrtRSI;
+  st.site = &jb_emlrtRSI;
   nx = x->size[1];
-  b_st.site = &gb_emlrtRSI;
+  b_st.site = &kb_emlrtRSI;
   if ((1 <= x->size[1]) && (x->size[1] > 2147483646)) {
-    c_st.site = &ab_emlrtRSI;
+    c_st.site = &eb_emlrtRSI;
     check_forloop_overflow_error(&c_st);
   }
 
@@ -104,11 +104,11 @@ void c_sqrt(const emlrtStack *sp, emxArray_real_T *x)
       4, "sqrt");
   }
 
-  st.site = &fb_emlrtRSI;
+  st.site = &jb_emlrtRSI;
   nx = x->size[0] * x->size[1];
-  b_st.site = &gb_emlrtRSI;
+  b_st.site = &kb_emlrtRSI;
   if ((1 <= nx) && (nx > 2147483646)) {
-    c_st.site = &ab_emlrtRSI;
+    c_st.site = &eb_emlrtRSI;
     check_forloop_overflow_error(&c_st);
   }
 

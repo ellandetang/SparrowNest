@@ -2,7 +2,7 @@ function body = updateBody(body,simulation)
 % Takes simulation state and updates each body and propagate the states
 % forward in time
 for indB = 1:length(body)
-    keyboard
+    
     % From present filaments, calculate new vorticities on the wing
     body(indB).VInducedFixed = batchBiotSavart_mex(simulation.startPoints(:,simulation.selectedFilaments),simulation.endPoints(:,simulation.selectedFilaments),...
         simulation.Gamma(:,simulation.selectedFilaments),simulation.Rc(:,simulation.selectedFilaments),body(indB).FixedSamplePoints);
@@ -23,7 +23,8 @@ for indB = 1:length(body)
             body(indB).CrossGamma(body(indB).targetIndices(ind2)+(0:body(indB).nFilamentSegments-2));
     end
     
-    body(indB).CrossGamma(body(indB).targetIndices(1:end-1)) = body(indB).FixedGamma_Old - body(indB).FixedGamma;
+    %body(indB).CrossGamma(body(indB).targetIndices(1:end-1)) = body(indB).FixedGamma_Old - body(indB).FixedGamma;
+    body(indB).CrossGamma(:) = 0;
     
     % Calculate Induced Velocities
     VInduced = batchBiotSavart_mex(...

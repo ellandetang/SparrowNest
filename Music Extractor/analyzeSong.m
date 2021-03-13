@@ -1,12 +1,15 @@
 clear
 close all
 
-if exist('audioData.mat','file')
-    load('audioData.mat')
-else
-    [y,Fs] = audioread('Steven Universe - Escapism Instrumental.mp3');
-    save('audioData','y','Fs')
-end
+% It turns out saving the data is kinda large
+% if exist('audioData.mat','file')
+%     load('audioData.mat')
+% else
+%     [y,Fs] = audioread('Steven Universe - Escapism Instrumental.mp3');
+%     save('audioData','y','Fs')
+% end
+
+[y,Fs] = audioread('Steven Universe - Escapism Instrumental.mp3');
 
 songTime = length(y)/Fs;
 

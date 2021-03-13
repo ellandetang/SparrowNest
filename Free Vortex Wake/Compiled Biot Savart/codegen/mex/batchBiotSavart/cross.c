@@ -18,12 +18,12 @@
 #include "rt_nonfinite.h"
 
 /* Variable Definitions */
-static emlrtRSInfo pb_emlrtRSI = { 67, /* lineNo */
+static emlrtRSInfo vb_emlrtRSI = { 67, /* lineNo */
   "cross",                             /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\cross.m"/* pathName */
 };
 
-static emlrtRSInfo qb_emlrtRSI = { 69, /* lineNo */
+static emlrtRSInfo wb_emlrtRSI = { 69, /* lineNo */
   "cross",                             /* fcnName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\cross.m"/* pathName */
 };
@@ -40,7 +40,7 @@ static emlrtRTEInfo g_emlrtRTEI = { 19,/* lineNo */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\eml\\eml_int_forloop_overflow_check.m"/* pName */
 };
 
-static emlrtRTEInfo jc_emlrtRTEI = { 38,/* lineNo */
+static emlrtRTEInfo oc_emlrtRTEI = { 38,/* lineNo */
   24,                                  /* colNo */
   "cross",                             /* fName */
   "F:\\Program Files\\MATLAB\\R2020b\\toolbox\\eml\\lib\\matlab\\specfun\\cross.m"/* pName */
@@ -95,25 +95,25 @@ void cross(const emlrtStack *sp, const emxArray_real_T *a, const emxArray_real_T
   c->size[0] = a->size[0];
   c->size[1] = a->size[1];
   c->size[2] = 3;
-  emxEnsureCapacity_real_T(sp, c, stride, &jc_emlrtRTEI);
+  emxEnsureCapacity_real_T(sp, c, stride, &oc_emlrtRTEI);
   if ((a->size[0] != 0) && (a->size[1] != 0)) {
     stride = a->size[0] * a->size[1];
     iNext = stride * 3;
-    st.site = &pb_emlrtRSI;
+    st.site = &vb_emlrtRSI;
     if (iNext == 0) {
       emlrtErrorWithMessageIdR2018a(&st, &g_emlrtRTEI,
         "Coder:builtins:VectorStride", "Coder:builtins:VectorStride", 0);
     }
 
     if ((iNext != 0) && (1 > MAX_int32_T - iNext)) {
-      b_st.site = &ab_emlrtRSI;
+      b_st.site = &eb_emlrtRSI;
       check_forloop_overflow_error(&b_st);
     }
 
     for (iStart = 1; iNext < 0 ? iStart >= 1 : iStart <= 1; iStart += iNext) {
-      st.site = &qb_emlrtRSI;
+      st.site = &wb_emlrtRSI;
       if ((1 <= stride) && (stride > 2147483646)) {
-        b_st.site = &ab_emlrtRSI;
+        b_st.site = &eb_emlrtRSI;
         check_forloop_overflow_error(&b_st);
       }
 
